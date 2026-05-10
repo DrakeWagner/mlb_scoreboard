@@ -1,0 +1,280 @@
+MLB Producer Started
+Config loaded
+Producer connected to config
+Topics: mlb_game_state, mlb_pitches, mlb_boxscore_snapshots
+
+
+15:48:26 - 12 live games
+  824845 | Athletics 1 @ 2 Baltimore Orioles | 1 new pitches
+  824765 | Tampa Bay Rays 4 @ 1 Boston Red Sox | 2 new pitches
+  823463 | Colorado Rockies 0 @ 6 Philadelphia Phillies | 2 new pitches
+  822819 | Los Angeles Angels 6 @ 1 Toronto Blue Jays | 1 new pitches
+  824520 | Houston Astros 0 @ 5 Cincinnati Reds | 4 new pitches
+  824440 | Minnesota Twins 5 @ 3 Cleveland Guardians | 3 new pitches
+  824605 | Seattle Mariners 1 @ 0 Chicago White Sox | 5 new pitches
+  823793 | New York Yankees 2 @ 3 Milwaukee Brewers | 2 new pitches
+  822902 | Chicago Cubs 0 @ 1 Texas Rangers | 1 new pitches
+  823221 | Pittsburgh Pirates 0 @ 0 San Francisco Giants | 2 new pitches
+  823305 | St. Louis Cardinals 0 @ 0 San Diego Padres | 2 new pitches
+  823954 | Atlanta Braves 0 @ 0 Los Angeles Dodgers | 2 new pitches
+
+15:48:38 - 12 live games
+  824845 | Athletics 1 @ 2 Baltimore Orioles | 1 new pitches
+  824765 | Tampa Bay Rays 4 @ 1 Boston Red Sox | 0 new pitches
+  823463 | Colorado Rockies 0 @ 6 Philadelphia Phillies | 0 new pitches
+  822819 | Los Angeles Angels 6 @ 1 Toronto Blue Jays | 0 new pitches
+  824520 | Houston Astros 0 @ 5 Cincinnati Reds | 0 new pitches
+  824440 | Minnesota Twins 5 @ 3 Cleveland Guardians | 0 new pitches
+  824605 | Seattle Mariners 1 @ 0 Chicago White Sox | 0 new pitches
+  823793 | New York Yankees 2 @ 3 Milwaukee Brewers | 1 new pitches
+  822902 | Chicago Cubs 0 @ 1 Texas Rangers | 1 new pitches
+  823221 | Pittsburgh Pirates 0 @ 0 San Francisco Giants | 0 new pitches
+  823305 | St. Louis Cardinals 0 @ 0 San Diego Padres | 0 new pitches
+  823954 | Atlanta Braves 0 @ 0 Los Angeles Dodgers | 0 new pitches
+
+15:48:50 - 12 live games
+  824845 | Athletics 1 @ 2 Baltimore Orioles | 0 new pitches
+  824765 | Tampa Bay Rays 4 @ 1 Boston Red Sox | 1 new pitches
+  823463 | Colorado Rockies 0 @ 6 Philadelphia Phillies | 0 new pitches
+  822819 | Los Angeles Angels 6 @ 1 Toronto Blue Jays | 0 new pitches
+  824520 | Houston Astros 0 @ 5 Cincinnati Reds | 0 new pitches
+  824440 | Minnesota Twins 5 @ 3 Cleveland Guardians | 0 new pitches
+  824605 | Seattle Mariners 1 @ 0 Chicago White Sox | 0 new pitches
+  823793 | New York Yankees 2 @ 3 Milwaukee Brewers | 0 new pitches
+  822902 | Chicago Cubs 0 @ 1 Texas Rangers | 0 new pitches
+  823221 | Pittsburgh Pirates 0 @ 0 San Francisco Giants | 0 new pitches
+  823305 | St. Louis Cardinals 0 @ 0 San Diego Padres | 0 new pitches
+  823954 | Atlanta Braves 0 @ 0 Los Angeles Dodgers | 0 new pitches
+
+15:49:02 - 12 live games
+  824845 | Athletics 1 @ 2 Baltimore Orioles | 1 new pitches
+  824765 | Tampa Bay Rays 4 @ 1 Boston Red Sox | 1 new pitches
+  823463 | Colorado Rockies 0 @ 6 Philadelphia Phillies | 1 new pitches
+  822819 | Los Angeles Angels 6 @ 1 Toronto Blue Jays | 0 new pitches
+  824520 | Houston Astros 0 @ 5 Cincinnati Reds | 1 new pitches
+  824440 | Minnesota Twins 5 @ 3 Cleveland Guardians | 1 new pitches
+  824605 | Seattle Mariners 1 @ 0 Chicago White Sox | 0 new pitches
+  823793 | New York Yankees 2 @ 3 Milwaukee Brewers | 2 new pitches
+  822902 | Chicago Cubs 0 @ 1 Texas Rangers | 2 new pitches
+  823221 | Pittsburgh Pirates 0 @ 0 San Francisco Giants | 0 new pitches
+  823305 | St. Louis Cardinals 0 @ 0 San Diego Padres | 0 new pitches
+  823954 | Atlanta Braves 0 @ 0 Los Angeles Dodgers | 0 new pitches
+
+15:49:14 - 12 live games
+  824845 | Athletics 1 @ 2 Baltimore Orioles | 1 new pitches
+  824765 | Tampa Bay Rays 4 @ 1 Boston Red Sox | 1 new pitches
+  823463 | Colorado Rockies 0 @ 6 Philadelphia Phillies | 0 new pitches
+  822819 | Los Angeles Angels 6 @ 1 Toronto Blue Jays | 0 new pitches
+  824520 | Houston Astros 0 @ 5 Cincinnati Reds | 0 new pitches
+  824440 | Minnesota Twins 5 @ 3 Cleveland Guardians | 0 new pitches
+  824605 | Seattle Mariners 1 @ 0 Chicago White Sox | 0 new pitches
+  823793 | New York Yankees 2 @ 3 Milwaukee Brewers | 0 new pitches
+  822902 | Chicago Cubs 0 @ 1 Texas Rangers | 1 new pitches
+  823221 | Pittsburgh Pirates 0 @ 0 San Francisco Giants | 0 new pitches
+  823305 | St. Louis Cardinals 0 @ 0 San Diego Padres | 0 new pitches
+  823954 | Atlanta Braves 0 @ 0 Los Angeles Dodgers | 0 new pitches
+
+15:49:27 - 12 live games
+  824845 | Athletics 1 @ 2 Baltimore Orioles | 0 new pitches
+  824765 | Tampa Bay Rays 4 @ 1 Boston Red Sox | 0 new pitches
+  823463 | Colorado Rockies 0 @ 6 Philadelphia Phillies | 0 new pitches
+  822819 | Los Angeles Angels 6 @ 1 Toronto Blue Jays | 0 new pitches
+  824520 | Houston Astros 0 @ 5 Cincinnati Reds | 1 new pitches
+  824440 | Minnesota Twins 5 @ 3 Cleveland Guardians | 1 new pitches
+  824605 | Seattle Mariners 1 @ 0 Chicago White Sox | 0 new pitches
+  823793 | New York Yankees 2 @ 3 Milwaukee Brewers | 0 new pitches
+  822902 | Chicago Cubs 0 @ 1 Texas Rangers | 0 new pitches
+  823221 | Pittsburgh Pirates 0 @ 0 San Francisco Giants | 0 new pitches
+  823305 | St. Louis Cardinals 0 @ 0 San Diego Padres | 0 new pitches
+  823954 | Atlanta Braves 0 @ 0 Los Angeles Dodgers | 0 new pitches
+
+15:49:39 - 12 live games
+  824845 | Athletics 1 @ 2 Baltimore Orioles | 0 new pitches
+  824765 | Tampa Bay Rays 4 @ 1 Boston Red Sox | 1 new pitches
+  823463 | Colorado Rockies 0 @ 6 Philadelphia Phillies | 1 new pitches
+  822819 | Los Angeles Angels 6 @ 1 Toronto Blue Jays | 1 new pitches
+  824520 | Houston Astros 0 @ 5 Cincinnati Reds | 0 new pitches
+  824440 | Minnesota Twins 5 @ 3 Cleveland Guardians | 0 new pitches
+  824605 | Seattle Mariners 1 @ 0 Chicago White Sox | 1 new pitches
+  823793 | New York Yankees 2 @ 3 Milwaukee Brewers | 1 new pitches
+  822902 | Chicago Cubs 0 @ 1 Texas Rangers | 1 new pitches
+  823221 | Pittsburgh Pirates 0 @ 0 San Francisco Giants | 0 new pitches
+  823305 | St. Louis Cardinals 0 @ 0 San Diego Padres | 0 new pitches
+  823954 | Atlanta Braves 0 @ 0 Los Angeles Dodgers | 0 new pitches
+
+15:49:51 - 12 live games
+  824845 | Athletics 1 @ 2 Baltimore Orioles | 1 new pitches
+  824765 | Tampa Bay Rays 4 @ 1 Boston Red Sox | 0 new pitches
+  823463 | Colorado Rockies 0 @ 6 Philadelphia Phillies | 0 new pitches
+  822819 | Los Angeles Angels 6 @ 1 Toronto Blue Jays | 1 new pitches
+  824520 | Houston Astros 0 @ 5 Cincinnati Reds | 0 new pitches
+  824440 | Minnesota Twins 5 @ 3 Cleveland Guardians | 1 new pitches
+  824605 | Seattle Mariners 1 @ 0 Chicago White Sox | 0 new pitches
+  823793 | New York Yankees 2 @ 3 Milwaukee Brewers | 0 new pitches
+  822902 | Chicago Cubs 0 @ 1 Texas Rangers | 0 new pitches
+  823221 | Pittsburgh Pirates 0 @ 0 San Francisco Giants | 0 new pitches
+  823305 | St. Louis Cardinals 0 @ 0 San Diego Padres | 0 new pitches
+  823954 | Atlanta Braves 0 @ 0 Los Angeles Dodgers | 0 new pitches
+
+15:50:03 - 12 live games
+  824845 | Athletics 1 @ 2 Baltimore Orioles | 0 new pitches
+  824765 | Tampa Bay Rays 4 @ 1 Boston Red Sox | 0 new pitches
+  823463 | Colorado Rockies 0 @ 6 Philadelphia Phillies | 1 new pitches
+  822819 | Los Angeles Angels 6 @ 1 Toronto Blue Jays | 0 new pitches
+  824520 | Houston Astros 0 @ 5 Cincinnati Reds | 0 new pitches
+  824440 | Minnesota Twins 5 @ 3 Cleveland Guardians | 0 new pitches
+  824605 | Seattle Mariners 1 @ 0 Chicago White Sox | 0 new pitches
+  823793 | New York Yankees 2 @ 3 Milwaukee Brewers | 0 new pitches
+  822902 | Chicago Cubs 0 @ 1 Texas Rangers | 0 new pitches
+  823221 | Pittsburgh Pirates 0 @ 0 San Francisco Giants | 0 new pitches
+  823305 | St. Louis Cardinals 0 @ 0 San Diego Padres | 0 new pitches
+  823954 | Atlanta Braves 0 @ 0 Los Angeles Dodgers | 0 new pitches
+
+15:50:15 - 12 live games
+  824845 | Athletics 1 @ 2 Baltimore Orioles | 1 new pitches
+  824765 | Tampa Bay Rays 4 @ 1 Boston Red Sox | 0 new pitches
+  823463 | Colorado Rockies 0 @ 6 Philadelphia Phillies | 0 new pitches
+  822819 | Los Angeles Angels 6 @ 1 Toronto Blue Jays | 1 new pitches
+  824520 | Houston Astros 0 @ 5 Cincinnati Reds | 1 new pitches
+  824440 | Minnesota Twins 5 @ 3 Cleveland Guardians | 1 new pitches
+  824605 | Seattle Mariners 1 @ 0 Chicago White Sox | 0 new pitches
+  823793 | New York Yankees 2 @ 3 Milwaukee Brewers | 0 new pitches
+  822902 | Chicago Cubs 0 @ 1 Texas Rangers | 1 new pitches
+  823221 | Pittsburgh Pirates 0 @ 0 San Francisco Giants | 0 new pitches
+  823305 | St. Louis Cardinals 0 @ 0 San Diego Padres | 0 new pitches
+  823954 | Atlanta Braves 0 @ 0 Los Angeles Dodgers | 0 new pitches
+
+15:50:27 - 12 live games
+  824845 | Athletics 1 @ 2 Baltimore Orioles | 1 new pitches
+  824765 | Tampa Bay Rays 4 @ 1 Boston Red Sox | 0 new pitches
+  823463 | Colorado Rockies 0 @ 6 Philadelphia Phillies | 1 new pitches
+  822819 | Los Angeles Angels 6 @ 1 Toronto Blue Jays | 1 new pitches
+  824520 | Houston Astros 0 @ 5 Cincinnati Reds | 0 new pitches
+  824440 | Minnesota Twins 5 @ 3 Cleveland Guardians | 0 new pitches
+  824605 | Seattle Mariners 1 @ 0 Chicago White Sox | 0 new pitches
+  823793 | New York Yankees 2 @ 3 Milwaukee Brewers | 0 new pitches
+  822902 | Chicago Cubs 0 @ 1 Texas Rangers | 0 new pitches
+  823221 | Pittsburgh Pirates 0 @ 0 San Francisco Giants | 0 new pitches
+  823305 | St. Louis Cardinals 0 @ 0 San Diego Padres | 0 new pitches
+  823954 | Atlanta Braves 0 @ 0 Los Angeles Dodgers | 0 new pitches
+
+15:50:39 - 12 live games
+  824845 | Athletics 1 @ 2 Baltimore Orioles | 0 new pitches
+  824765 | Tampa Bay Rays 4 @ 1 Boston Red Sox | 0 new pitches
+  823463 | Colorado Rockies 0 @ 6 Philadelphia Phillies | 0 new pitches
+  822819 | Los Angeles Angels 6 @ 1 Toronto Blue Jays | 1 new pitches
+  824520 | Houston Astros 0 @ 5 Cincinnati Reds | 0 new pitches
+  824440 | Minnesota Twins 5 @ 3 Cleveland Guardians | 0 new pitches
+  824605 | Seattle Mariners 1 @ 0 Chicago White Sox | 0 new pitches
+  823793 | New York Yankees 2 @ 3 Milwaukee Brewers | 1 new pitches
+  822902 | Chicago Cubs 0 @ 1 Texas Rangers | 1 new pitches
+  823221 | Pittsburgh Pirates 0 @ 0 San Francisco Giants | 0 new pitches
+  823305 | St. Louis Cardinals 0 @ 0 San Diego Padres | 0 new pitches
+  823954 | Atlanta Braves 0 @ 0 Los Angeles Dodgers | 0 new pitches
+
+15:50:51 - 12 live games
+  824845 | Athletics 1 @ 2 Baltimore Orioles | 1 new pitches
+  824765 | Tampa Bay Rays 4 @ 1 Boston Red Sox | 1 new pitches
+  823463 | Colorado Rockies 0 @ 6 Philadelphia Phillies | 1 new pitches
+  822819 | Los Angeles Angels 6 @ 1 Toronto Blue Jays | 0 new pitches
+  824520 | Houston Astros 0 @ 5 Cincinnati Reds | 0 new pitches
+  824440 | Minnesota Twins 5 @ 3 Cleveland Guardians | 0 new pitches
+  824605 | Seattle Mariners 1 @ 0 Chicago White Sox | 1 new pitches
+  823793 | New York Yankees 2 @ 3 Milwaukee Brewers | 0 new pitches
+  822902 | Chicago Cubs 0 @ 1 Texas Rangers | 1 new pitches
+  823221 | Pittsburgh Pirates 0 @ 0 San Francisco Giants | 0 new pitches
+  823305 | St. Louis Cardinals 0 @ 0 San Diego Padres | 0 new pitches
+  823954 | Atlanta Braves 0 @ 0 Los Angeles Dodgers | 0 new pitches
+
+15:51:04 - 12 live games
+  824845 | Athletics 1 @ 2 Baltimore Orioles | 0 new pitches
+  824765 | Tampa Bay Rays 4 @ 1 Boston Red Sox | 0 new pitches
+  823463 | Colorado Rockies 0 @ 6 Philadelphia Phillies | 1 new pitches
+  822819 | Los Angeles Angels 6 @ 1 Toronto Blue Jays | 0 new pitches
+  824520 | Houston Astros 0 @ 5 Cincinnati Reds | 0 new pitches
+  824440 | Minnesota Twins 5 @ 3 Cleveland Guardians | 0 new pitches
+  824605 | Seattle Mariners 1 @ 0 Chicago White Sox | 0 new pitches
+  823793 | New York Yankees 2 @ 3 Milwaukee Brewers | 1 new pitches
+  822902 | Chicago Cubs 0 @ 1 Texas Rangers | 0 new pitches
+  823221 | Pittsburgh Pirates 0 @ 0 San Francisco Giants | 0 new pitches
+  823305 | St. Louis Cardinals 0 @ 0 San Diego Padres | 0 new pitches
+  823954 | Atlanta Braves 0 @ 0 Los Angeles Dodgers | 0 new pitches
+
+15:51:16 - 12 live games
+  824845 | Athletics 1 @ 2 Baltimore Orioles | 1 new pitches
+  824765 | Tampa Bay Rays 4 @ 1 Boston Red Sox | 0 new pitches
+  823463 | Colorado Rockies 0 @ 6 Philadelphia Phillies | 0 new pitches
+  822819 | Los Angeles Angels 6 @ 1 Toronto Blue Jays | 0 new pitches
+  824520 | Houston Astros 0 @ 5 Cincinnati Reds | 0 new pitches
+  824440 | Minnesota Twins 5 @ 3 Cleveland Guardians | 0 new pitches
+  824605 | Seattle Mariners 1 @ 0 Chicago White Sox | 1 new pitches
+  823793 | New York Yankees 2 @ 3 Milwaukee Brewers | 0 new pitches
+  822902 | Chicago Cubs 0 @ 1 Texas Rangers | 1 new pitches
+  823221 | Pittsburgh Pirates 0 @ 0 San Francisco Giants | 0 new pitches
+  823305 | St. Louis Cardinals 0 @ 0 San Diego Padres | 0 new pitches
+  823954 | Atlanta Braves 0 @ 0 Los Angeles Dodgers | 0 new pitches
+
+15:51:28 - 13 live games
+  824845 | Athletics 1 @ 2 Baltimore Orioles | 1 new pitches
+  824765 | Tampa Bay Rays 4 @ 1 Boston Red Sox | 0 new pitches
+  823463 | Colorado Rockies 0 @ 6 Philadelphia Phillies | 0 new pitches
+  822819 | Los Angeles Angels 6 @ 1 Toronto Blue Jays | 1 new pitches
+  824520 | Houston Astros 0 @ 5 Cincinnati Reds | 0 new pitches
+  824440 | Minnesota Twins 5 @ 3 Cleveland Guardians | 0 new pitches
+  824605 | Seattle Mariners 1 @ 0 Chicago White Sox | 0 new pitches
+  823793 | New York Yankees 2 @ 3 Milwaukee Brewers | 1 new pitches
+  822902 | Chicago Cubs 0 @ 1 Texas Rangers | 0 new pitches
+  823221 | Pittsburgh Pirates 0 @ 0 San Francisco Giants | 0 new pitches
+  825085 | New York Mets 0 @ 0 Arizona Diamondbacks | 2 new pitches
+  823305 | St. Louis Cardinals 0 @ 0 San Diego Padres | 0 new pitches
+  823954 | Atlanta Braves 0 @ 0 Los Angeles Dodgers | 0 new pitches
+
+15:51:40 - 13 live games
+  824845 | Athletics 1 @ 2 Baltimore Orioles | 0 new pitches
+  824765 | Tampa Bay Rays 4 @ 1 Boston Red Sox | 0 new pitches
+  823463 | Colorado Rockies 0 @ 6 Philadelphia Phillies | 1 new pitches
+  822819 | Los Angeles Angels 6 @ 1 Toronto Blue Jays | 0 new pitches
+  824520 | Houston Astros 0 @ 5 Cincinnati Reds | 0 new pitches
+  824440 | Minnesota Twins 5 @ 3 Cleveland Guardians | 0 new pitches
+  824605 | Seattle Mariners 1 @ 0 Chicago White Sox | 0 new pitches
+  823793 | New York Yankees 2 @ 3 Milwaukee Brewers | 0 new pitches
+  822902 | Chicago Cubs 0 @ 1 Texas Rangers | 1 new pitches
+  823221 | Pittsburgh Pirates 0 @ 0 San Francisco Giants | 0 new pitches
+  825085 | New York Mets 0 @ 0 Arizona Diamondbacks | 0 new pitches
+  823305 | St. Louis Cardinals 0 @ 0 San Diego Padres | 0 new pitches
+  823954 | Atlanta Braves 0 @ 0 Los Angeles Dodgers | 0 new pitches
+
+15:51:52 - 13 live games
+  824845 | Athletics 1 @ 2 Baltimore Orioles | 1 new pitches
+  824765 | Tampa Bay Rays 4 @ 1 Boston Red Sox | 0 new pitches
+  823463 | Colorado Rockies 0 @ 6 Philadelphia Phillies | 0 new pitches
+  822819 | Los Angeles Angels 6 @ 1 Toronto Blue Jays | 0 new pitches
+  824520 | Houston Astros 0 @ 5 Cincinnati Reds | 1 new pitches
+  824440 | Minnesota Twins 5 @ 3 Cleveland Guardians | 0 new pitches
+  824605 | Seattle Mariners 1 @ 0 Chicago White Sox | 0 new pitches
+  823793 | New York Yankees 2 @ 3 Milwaukee Brewers | 1 new pitches
+  822902 | Chicago Cubs 0 @ 1 Texas Rangers | 0 new pitches
+  823221 | Pittsburgh Pirates 0 @ 0 San Francisco Giants | 0 new pitches
+  825085 | New York Mets 0 @ 0 Arizona Diamondbacks | 0 new pitches
+  823305 | St. Louis Cardinals 0 @ 0 San Diego Padres | 0 new pitches
+  823954 | Atlanta Braves 0 @ 0 Los Angeles Dodgers | 0 new pitches
+
+15:52:04 - 13 live games
+  824845 | Athletics 1 @ 2 Baltimore Orioles | 0 new pitches
+  824765 | Tampa Bay Rays 4 @ 1 Boston Red Sox | 0 new pitches
+  823463 | Colorado Rockies 0 @ 6 Philadelphia Phillies | 0 new pitches
+  822819 | Los Angeles Angels 6 @ 1 Toronto Blue Jays | 1 new pitches
+  824520 | Houston Astros 0 @ 5 Cincinnati Reds | 0 new pitches
+  824440 | Minnesota Twins 5 @ 3 Cleveland Guardians | 0 new pitches
+  824605 | Seattle Mariners 1 @ 0 Chicago White Sox | 1 new pitches
+  823793 | New York Yankees 3 @ 3 Milwaukee Brewers | 1 new pitches
+  822902 | Chicago Cubs 0 @ 1 Texas Rangers | 1 new pitches
+  823221 | Pittsburgh Pirates 0 @ 0 San Francisco Giants | 0 new pitches
+  825085 | New York Mets 0 @ 0 Arizona Diamondbacks | 0 new pitches
+  823305 | St. Louis Cardinals 0 @ 0 San Diego Padres | 0 new pitches
+  823954 | Atlanta Braves 0 @ 0 Los Angeles Dodgers | 0 new pitches
+
+15:52:16 - 13 live games
+  824845 | Athletics 1 @ 2 Baltimore Orioles | 1 new pitches
+  824765 | Tampa Bay Rays 4 @ 1 Boston Red Sox | 2 new pitches
+  823463 | Colorado Rockies 0 @ 6 Philadelphia Phillies | 0 new pitches
