@@ -60,3 +60,19 @@ FONT_4X6 = {
     '8': [[0,1,1,0],[1,0,0,1],[0,1,1,0],[1,0,0,1],[0,1,1,0],[0,0,0,0]],
     '9': [[0,1,1,0],[1,0,0,1],[0,1,1,1],[0,0,0,1],[0,1,1,0],[0,0,0,0]],
 }
+
+
+def export_to_js(filename="fonts.js"):
+    """Export fonts to JavaScript file for the HTML simulator"""
+    with open(filename, "w") as f:
+        f.write("\\ Auto-generated from fonts.py - DO NOT EDIT\n\n")
+        
+        f.write("const FONT_5X8 = ")
+        f.write(str(FONT_5X8).replace("'", '"'))
+        f.write(";\n\n")
+        
+        f.write("const FONT_4X6 = ")
+        f.write(str(FONT_4X6).replace("'", '"'))
+        f.write(";\n")
+    
+    print(f"✅ Successfully generated {filename}")

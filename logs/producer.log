@@ -1,153 +1,185 @@
-18:53:27 | INFO     | mlb producer started
-18:53:27 | INFO     | Config loaded
-18:53:27 | INFO     | Producer connected to config
-18:53:27 | INFO     | Topics: mlb_game_state, mlb_pitches, mlb_boxscore_snapshots
+20:52:56 | INFO     | mlb producer started
+20:52:56 | INFO     | Config loaded
+20:52:56 | INFO     | Producer connected to config
+20:52:56 | INFO     | Topics: mlb_game_state, mlb_pitches, mlb_boxscore_snapshots
 
-18:53:27 | INFO     | 
-18:53:27 - 2 live games
-18:53:27 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:53:27 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 4 new pitches
-18:53:37 | INFO     | 
-18:53:37 - 2 live games
-18:53:38 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 1 new pitches
-18:53:38 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:53:48 | INFO     | 
-18:53:48 - 2 live games
-18:53:48 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 1 new pitches
-18:53:48 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:53:59 | INFO     | 
-18:53:59 - 2 live games
-18:53:59 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:53:59 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 2 new pitches
-18:54:09 | INFO     | 
-18:54:09 - 2 live games
-18:54:09 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 1 new pitches
-18:54:10 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:54:20 | INFO     | 
-18:54:20 - 2 live games
-18:54:20 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:54:20 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:54:30 | INFO     | 
-18:54:30 - 2 live games
-18:54:30 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 1 new pitches
-18:54:31 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:54:41 | INFO     | 
-18:54:41 - 2 live games
-18:54:41 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:54:41 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:54:51 | INFO     | 
-18:54:51 - 2 live games
-18:54:52 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 1 new pitches
-18:54:52 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:55:02 | INFO     | 
-18:55:02 - 2 live games
-18:55:02 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:55:02 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 4 new pitches
-18:55:13 | INFO     | 
-18:55:13 - 2 live games
-18:55:13 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:55:13 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:55:23 | INFO     | 
-18:55:23 - 2 live games
-18:55:23 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:55:23 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:55:34 | INFO     | 
-18:55:34 - 2 live games
-18:55:34 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 1 new pitches
-18:55:34 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 1 new pitches
-18:55:44 | INFO     | 
-18:55:44 - 2 live games
-18:55:44 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 1 new pitches
-18:55:45 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:55:55 | INFO     | 
-18:55:55 - 2 live games
-18:55:55 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 1 new pitches
-18:55:55 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:56:05 | INFO     | 
-18:56:05 - 2 live games
-18:56:06 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 1 new pitches
-18:56:06 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:56:16 | INFO     | 
-18:56:16 - 2 live games
-18:56:16 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:56:16 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:56:26 | INFO     | 
-18:56:26 - 2 live games
-18:56:27 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 1 new pitches
-18:56:27 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 1 new pitches
-18:56:37 | INFO     | 
-18:56:37 - 2 live games
-18:56:37 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:56:37 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:56:48 | INFO     | 
-18:56:48 - 2 live games
-18:56:48 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:56:48 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:56:58 | INFO     | 
-18:56:58 - 2 live games
-18:56:58 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:56:59 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:57:09 | INFO     | 
-18:57:09 - 2 live games
-18:57:09 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:57:09 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 1 new pitches
-18:57:19 | INFO     | 
-18:57:19 - 2 live games
-18:57:20 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:57:20 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:57:30 | INFO     | 
-18:57:30 - 2 live games
-18:57:30 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:57:30 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:57:40 | INFO     | 
-18:57:40 - 2 live games
-18:57:41 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:57:41 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 1 new pitches
-18:57:51 | INFO     | 
-18:57:51 - 2 live games
-18:57:51 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:57:51 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 1 new pitches
-18:58:02 | INFO     | 
-18:58:02 - 2 live games
-18:58:02 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:58:02 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:58:12 | INFO     | 
-18:58:12 - 2 live games
-18:58:12 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:58:13 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:58:23 | INFO     | 
-18:58:23 - 2 live games
-18:58:23 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:58:23 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:58:33 | INFO     | 
-18:58:33 - 2 live games
-18:58:33 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 1 new pitches
-18:58:34 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 1 new pitches
-18:58:44 | INFO     | 
-18:58:44 - 2 live games
-18:58:44 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:58:44 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:58:54 | INFO     | 
-18:58:54 - 2 live games
-18:58:55 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 1 new pitches
-18:58:55 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 1 new pitches
-18:59:05 | INFO     | 
-18:59:05 - 2 live games
-18:59:05 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:59:05 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 1 new pitches
-18:59:16 | INFO     | 
-18:59:16 - 2 live games
-18:59:16 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 1 new pitches
-18:59:16 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:59:26 | INFO     | 
-18:59:26 - 2 live games
-18:59:26 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:59:27 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:59:37 | INFO     | 
-18:59:37 - 2 live games
-18:59:37 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 1 new pitches
-18:59:37 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
-18:59:47 | INFO     | 
-18:59:47 - 2 live games
-18:59:48 | INFO     |   823221 | Pittsburgh Pirates 4 @ 4 San Francisco Giants | 0 new pitches
-18:59:48 | INFO     |   823305 | St. Louis Cardinals 2 @ 2 San Diego Padres | 0 new pitches
+20:52:57 | INFO     | 
+20:52:57 - 1 live game
+20:52:57 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 13 new pitches
+20:53:07 | INFO     | 
+20:53:07 - 1 live game
+20:53:08 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:53:18 | INFO     | 
+20:53:18 - 1 live game
+20:53:18 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:53:28 | INFO     | 
+20:53:28 - 1 live game
+20:53:28 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 1 new pitches
+20:53:38 | INFO     | 
+20:53:38 - 1 live game
+20:53:39 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:53:49 | INFO     | 
+20:53:49 - 1 live game
+20:53:49 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 1 new pitches
+20:53:59 | INFO     | 
+20:53:59 - 1 live game
+20:53:59 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:54:09 | INFO     | 
+20:54:09 - 1 live game
+20:54:10 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 1 new pitches
+20:54:20 | INFO     | 
+20:54:20 - 1 live game
+20:54:20 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:54:30 | INFO     | 
+20:54:30 - 1 live game
+20:54:30 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 1 new pitches
+20:54:40 | INFO     | 
+20:54:40 - 1 live game
+20:54:41 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:54:51 | INFO     | 
+20:54:51 - 1 live game
+20:54:51 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 1 new pitches
+20:55:01 | INFO     | 
+20:55:01 - 1 live game
+20:55:01 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:55:12 | INFO     | 
+20:55:12 - 1 live game
+20:55:12 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 1 new pitches
+20:55:22 | INFO     | 
+20:55:22 - 1 live game
+20:55:22 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:55:32 | INFO     | 
+20:55:32 - 1 live game
+20:55:33 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:55:43 | INFO     | 
+20:55:43 - 1 live game
+20:55:43 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 1 new pitches
+20:55:53 | INFO     | 
+20:55:53 - 1 live game
+20:55:53 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 1 new pitches
+20:56:03 | INFO     | 
+20:56:03 - 1 live game
+20:56:04 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:56:14 | INFO     | 
+20:56:14 - 1 live game
+20:56:14 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:56:24 | INFO     | 
+20:56:24 - 1 live game
+20:56:24 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:56:34 | INFO     | 
+20:56:34 - 1 live game
+20:56:35 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 1 new pitches
+20:56:45 | INFO     | 
+20:56:45 - 1 live game
+20:56:45 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:56:55 | INFO     | 
+20:56:55 - 1 live game
+20:56:55 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 1 new pitches
+20:57:06 | INFO     | 
+20:57:06 - 1 live game
+20:57:06 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:57:16 | INFO     | 
+20:57:16 - 1 live game
+20:57:16 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 1 new pitches
+20:57:26 | INFO     | 
+20:57:26 - 1 live game
+20:57:26 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:57:37 | INFO     | 
+20:57:37 - 1 live game
+20:57:37 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:57:47 | INFO     | 
+20:57:47 - 1 live game
+20:57:47 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:57:57 | INFO     | 
+20:57:57 - 1 live game
+20:57:58 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 1 new pitches
+20:58:08 | INFO     | 
+20:58:08 - 1 live game
+20:58:08 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:58:18 | INFO     | 
+20:58:18 - 1 live game
+20:58:18 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:58:28 | INFO     | 
+20:58:28 - 1 live game
+20:58:29 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 1 new pitches
+20:58:39 | INFO     | 
+20:58:39 - 1 live game
+20:58:39 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 1 new pitches
+20:58:49 | INFO     | 
+20:58:49 - 1 live game
+20:58:49 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:59:00 | INFO     | 
+20:59:00 - 1 live game
+20:59:00 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:59:10 | INFO     | 
+20:59:10 - 1 live game
+20:59:10 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:59:20 | INFO     | 
+20:59:20 - 1 live game
+20:59:20 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:59:31 | INFO     | 
+20:59:31 - 1 live game
+20:59:31 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:59:41 | INFO     | 
+20:59:41 - 1 live game
+20:59:41 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+20:59:51 | INFO     | 
+20:59:51 - 1 live game
+20:59:52 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 2 new pitches
+21:00:02 | INFO     | 
+21:00:02 - 1 live game
+21:00:02 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+21:00:12 | INFO     | 
+21:00:12 - 1 live game
+21:00:12 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+21:00:22 | INFO     | 
+21:00:22 - 1 live game
+21:00:23 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+21:00:33 | INFO     | 
+21:00:33 - 1 live game
+21:00:33 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+21:00:43 | INFO     | 
+21:00:43 - 1 live game
+21:00:43 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+21:00:53 | INFO     | 
+21:00:53 - 1 live game
+21:00:54 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+21:01:04 | INFO     | 
+21:01:04 - 1 live game
+21:01:04 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+21:01:14 | INFO     | 
+21:01:14 - 1 live game
+21:01:14 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+21:01:25 | INFO     | 
+21:01:25 - 1 live game
+21:01:25 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 1 new pitches
+21:01:35 | INFO     | 
+21:01:35 - 1 live game
+21:01:35 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+21:01:45 | INFO     | 
+21:01:45 - 1 live game
+21:01:45 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 1 new pitches
+21:01:56 | INFO     | 
+21:01:56 - 1 live game
+21:01:56 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 1 new pitches
+21:02:06 | INFO     | 
+21:02:06 - 1 live game
+21:02:06 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+21:02:16 | INFO     | 
+21:02:16 - 1 live game
+21:02:16 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+21:02:27 | INFO     | 
+21:02:27 - 1 live game
+21:02:27 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+21:02:37 | INFO     | 
+21:02:37 - 1 live game
+21:02:37 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 1 new pitches
+21:02:47 | INFO     | 
+21:02:47 - 1 live game
+21:02:48 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+21:02:58 | INFO     | 
+21:02:58 - 1 live game
+21:02:58 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 0 new pitches
+21:03:08 | INFO     | 
+21:03:08 - 1 live game
+21:03:08 | INFO     |   824113 | Detroit Tigers 3 @ 3 Kansas City Royals | 1 new pitches
