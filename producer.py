@@ -2,11 +2,18 @@ from confluent_kafka import Producer
 import requests
 import json
 import time
+import logging
 from datetime import datetime, timezone
 
 dev_mode = 0
 seen_pitches = set()
 
+logging.basicConfig(
+    level=logging.INFO,   
+    format='%(asctime)s | %(levelname)-8s | %(message)s',
+    datefmt='%H:%M:%S'
+)
+logger = logging.getLogger(__name__)
 
 def read_config():
     config = {}
@@ -24,9 +31,9 @@ def read_config():
 
 def delivery_report(err, msg):
     if err is not None:
-        print(f'  [ERROR] Delivery failed: {err}')
+        logger.error(f'Delivery failed: {err}')
     elif dev_mode:
-        print(f'  [OK] {msg.topic()} | partition {msg.partition()} @ offset {msg.offset()}')
+       logger.debug(f'Delivered {msg.topic()}')
 
 
 def fetch_live_game_pks():
@@ -44,7 +51,7 @@ def fetch_live_game_pks():
                     live_games.append(game['gamePk'])
         return live_games
     except Exception as e:
-        print(f'Error fetching live games: {e}')
+        logger.info(f'Error fetching live games: {e}')
         return []
 
 
@@ -205,13 +212,13 @@ def extract_boxscore(game_pk, data):
 
 
 def main():
-    print('MLB Producer Started')
+    logger.info('mlb producer started')
     config = read_config()
     config['log_level'] = '0'
-    print('Config loaded')
+    logger.info('Config loaded')
 
     producer = Producer(config)
-    print('Producer connected to config')
+    logger.info('Producer connected to config')
 
     topics = {
         'game_state': 'mlb_game_state',
@@ -219,7 +226,7 @@ def main():
         'boxscore': 'mlb_boxscore_snapshots',
     }
 
-    print(f'Topics: {', '.join(topics.values())}\n')
+    logger.info(f'Topics: {', '.join(topics.values())}\n')
 
     while True:
         try:
@@ -228,10 +235,10 @@ def main():
             count = len(live_game_pks)
             s = 's' if count > 1 else ''
             if not live_game_pks:
-                print(f'{timestamp} - No live games.')
+                logger.info(f'{timestamp} - No live games.')
             else:
 
-                print(f'\n{timestamp} - {count} live game{s}')
+                logger.info(f'\n{timestamp} - {count} live game{s}')
 
 
                 for game_pk in live_game_pks:
@@ -266,18 +273,18 @@ def main():
                             callback=delivery_report,
                         )
 
-                        print(f"  {game_pk} | {game_state['away_team']} {game_state['away_score']} @ {game_state['home_score']} {game_state['home_team']} | {len(new_pitches)} new pitches")
+                        logger.info(f"  {game_pk} | {game_state['away_team']} {game_state['away_score']} @ {game_state['home_score']} {game_state['home_team']} | {len(new_pitches)} new pitches")
                     except Exception as e:
-                        print(f'  Error on game {game_pk}: {e}')
+                        logger.info(f'  Error on game {game_pk}: {e}')
 
             producer.flush()
             time.sleep(10)
 
         except KeyboardInterrupt:
-            print('\nShutting down.')
+            logger.info('\nShutting down.')
             break
         except Exception as e:
-            print(f'Unexpected error: {e}')
+            logger.info(f'Unexpected error: {e}')
             time.sleep(30)
 
 

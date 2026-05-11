@@ -204,7 +204,7 @@ def render(canvas, game_data):
     if 'previous_outs' not in globals():
         previous_outs = outs
 
-    if outs >= 3 OR outs > previous_outs:
+    if outs >= 3 or outs > previous_outs:
         balls = 0
         strikes = 0
 

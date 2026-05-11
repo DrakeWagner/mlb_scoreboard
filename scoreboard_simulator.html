@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MLB Scoreboard Simulator</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0a0a0a;
+    color: #ccc;
+    font-family: 'Courier New', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    gap: 40px;
+  }
+  h1 {
+    color: #555;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+  .panel-wrap {
+    background: #111;
+    border: 2px solid #222;
+    border-radius: 6px;
+    padding: 20px;
+    box-shadow: 0 0 60px rgba(0,0,0,0.8);
+  }
+  .panel-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: #333;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  #matrix {
+    display: grid;
+    grid-template-columns: repeat(64, 1fr);
+    grid-template-rows: repeat(32, 1fr);
+    width: 640px;
+    height: 320px;
+    gap: 1px;
+    background: #0d0d0d;
+    border: 1px solid #1a1a1a;
+    border-radius: 4px;
+    padding: 4px;
+  }
+  .led {
+    border-radius: 50%;
+    background: #1a0a0a;
+  }
+  .controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    width: 640px;
+  }
+  .control-group {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 4px;
+    padding: 16px;
+  }
+  .control-group h3 {
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: #444;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .control-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  label { font-size: 11px; color: #777; }
+</style>
+</head>
+<body>
+<h1>MLB Scoreboard — LED Matrix Simulator</h1>
+
+<div class="panel-wrap">
+  <div class="panel-label">64 × 32 RGB LED Panel</div>
+  <div id="matrix"></div>
+</div>
+
+<div class="controls">
+  <div class="control-group">
+    <h3>Game</h3>
+    <div class="control-row"><label>Away Team</label><input type="text" id="away_team" value="CIN" maxlength="3"></div>
+    <div class="control-row"><label>Away Score</label><input type="number" id="away_score" value="3" min="0" max="99"></div>
+    <div class="control-row"><label>Home Team</label><input type="text" id="home_team" value="CHC" maxlength="3"></div>
+    <div class="control-row"><label>Home Score</label><input type="number" id="home_score" value="5" min="0" max="99"></div>
+  </div>
+
+  <div class="control-group">
+    <h3>Situation</h3>
+    <div class="control-row"><label>Inning</label><input type="number" id="inning" value="7" min="1" max="20"></div>
+    <div class="control-row">
+      <label>Half</label>
+      <select id="inning_half">
+        <option value="TOP">TOP</option>
+        <option value="BOT" selected>BOT</option>
+      </select>
+    </div>
+    <div class="control-row"><label>Balls</label><input type="number" id="balls" value="1" min="0" max="3"></div>
+    <div class="control-row"><label>Strikes</label><input type="number" id="strikes" value="2" min="0" max="2"></div>
+    <div class="control-row"><label>Outs</label><input type="number" id="outs" value="1" min="0" max="3"></div>
+  </div>
+
+  <div class="control-group">
+    <h3>Bases</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 10px 0;">
+      <button id="btn_2b" onclick="toggleBase('2b')">2B</button>
+      <button id="btn_3b" onclick="toggleBase('3b')">3B</button>
+      <button id="btn_1b" onclick="toggleBase('1b')">1B</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ====================== FULL FONTS + RENDER CODE ======================
+const COLS = 64;
+const ROWS = 32;
+let leds = [];
+let bases = { '1b': false, '2b': false, '3b': false };
+
+const matrix = document.getElementById('matrix');
+for (let r = 0; r < ROWS; r++) {
+  leds[r] = [];
+  for (let c = 0; c < COLS; c++) {
+    const led = document.createElement('div');
+    led.className = 'led';
+    matrix.appendChild(led);
+    leds[r][c] = led;
+  }
+}
+
+function setPixel(x, y, r, g, b) {
+  if (x < 0 || x >= COLS || y < 0 || y >= ROWS) return;
+  leds[y][x].style.background = `rgb(${r},${g},${b})`;
+}
+
+function clearMatrix() {
+  for (let r = 0; r < ROWS; r++)
+    for (let c = 0; c < COLS; c++)
+      leds[r][c].style.background = '#1a0a0a';
+}
+
+// === FONTS FROM YOUR PYTHON CODE ===
+const FONT_5X8 = {
+    '0': [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,1,1],[1,0,1,0,1],[1,1,0,0,1],[1,0,0,0,1],[0,1,1,1,0],[0,0,0,0,0]],
+    '1': [[0,0,1,0,0],[0,1,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,1,1,1,0],[0,0,0,0,0]],
+    '2': [[0,1,1,1,0],[1,0,0,0,1],[0,0,0,0,1],[0,0,0,1,0],[0,0,1,0,0],[0,1,0,0,0],[1,1,1,1,1],[0,0,0,0,0]],
+    '3': [[1,1,1,1,0],[0,0,0,0,1],[0,0,0,0,1],[0,1,1,1,0],[0,0,0,0,1],[0,0,0,0,1],[1,1,1,1,0],[0,0,0,0,0]],
+    '4': [[0,0,0,1,0],[0,0,1,1,0],[0,1,0,1,0],[1,0,0,1,0],[1,1,1,1,1],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,0,0]],
+    '5': [[1,1,1,1,1],[1,0,0,0,0],[1,1,1,1,0],[0,0,0,0,1],[0,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0],[0,0,0,0,0]],
+    '6': [[0,1,1,1,0],[1,0,0,0,0],[1,0,0,0,0],[1,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0],[0,0,0,0,0]],
+    '7': [[1,1,1,1,1],[0,0,0,0,1],[0,0,0,1,0],[0,0,1,0,0],[0,1,0,0,0],[0,1,0,0,0],[0,1,0,0,0],[0,0,0,0,0]],
+    '8': [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0],[0,0,0,0,0]],
+    '9': [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,1],[0,0,0,0,1],[0,0,0,0,1],[0,1,1,1,0],[0,0,0,0,0]],
+    'A': [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,1,1,1,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[0,0,0,0,0]],
+    'B': [[1,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,1,1,1,0],[0,0,0,0,0]],
+    'C': [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,1],[0,1,1,1,0],[0,0,0,0,0]],
+    'D': [[1,1,1,0,0],[1,0,0,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,1,0],[1,1,1,0,0],[0,0,0,0,0]],
+    'E': [[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0],[1,1,1,1,0],[1,0,0,0,0],[1,0,0,0,0],[1,1,1,1,1],[0,0,0,0,0]],
+    'F': [[1,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0],[1,1,1,1,0],[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0],[0,0,0,0,0]],
+    'G': [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,0],[1,0,1,1,1],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0],[0,0,0,0,0]],
+    'H': [[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,1,1,1,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[0,0,0,0,0]],
+    'I': [[0,1,1,1,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,1,1,1,0],[0,0,0,0,0]],
+    'J': [[0,0,1,1,1],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,1,0],[1,0,0,1,0],[1,0,0,1,0],[0,1,1,0,0],[0,0,0,0,0]],
+    'K': [[1,0,0,0,1],[1,0,0,1,0],[1,0,1,0,0],[1,1,0,0,0],[1,0,1,0,0],[1,0,0,1,0],[1,0,0,0,1],[0,0,0,0,0]],
+    'L': [[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0],[1,1,1,1,1],[0,0,0,0,0]],
+    'M': [[1,0,0,0,1],[1,1,0,1,1],[1,0,1,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[0,0,0,0,0]],
+    'N': [[1,0,0,0,1],[1,1,0,0,1],[1,0,1,0,1],[1,0,0,1,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[0,0,0,0,0]],
+    'O': [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0],[0,0,0,0,0]],
+    'P': [[1,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,1,1,1,0],[1,0,0,0,0],[1,0,0,0,0],[1,0,0,0,0],[0,0,0,0,0]],
+    'Q': [[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,1,0,1],[1,0,0,1,0],[0,1,1,0,1],[0,0,0,0,0]],
+    'R': [[1,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,1,1,1,0],[1,0,1,0,0],[1,0,0,1,0],[1,0,0,0,1],[0,0,0,0,0]],
+    'S': [[0,1,1,1,1],[1,0,0,0,0],[1,0,0,0,0],[0,1,1,1,0],[0,0,0,0,1],[0,0,0,0,1],[1,1,1,1,0],[0,0,0,0,0]],
+    'T': [[1,1,1,1,1],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,0,0,0]],
+    'U': [[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[0,1,1,1,0],[0,0,0,0,0]],
+    'V': [[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[0,1,0,1,0],[0,0,1,0,0],[0,0,0,0,0]],
+    'W': [[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,1,0,1],[1,0,1,0,1],[1,1,0,1,1],[1,0,0,0,1],[0,0,0,0,0]],
+    'X': [[1,0,0,0,1],[1,0,0,0,1],[0,1,0,1,0],[0,0,1,0,0],[0,1,0,1,0],[1,0,0,0,1],[1,0,0,0,1],[0,0,0,0,0]],
+    'Y': [[1,0,0,0,1],[1,0,0,0,1],[0,1,0,1,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,0,0,0]],
+    'Z': [[1,1,1,1,1],[0,0,0,0,1],[0,0,0,1,0],[0,0,1,0,0],[0,1,0,0,0],[1,0,0,0,0],[1,1,1,1,1],[0,0,0,0,0]],
+    ' ': [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]],
+};
+
+const FONT_4X6 = {
+    'B': [[1,1,1,0],[1,0,0,1],[1,1,1,0],[1,0,0,1],[1,1,1,0],[0,0,0,0]],
+    'A': [[0,1,1,0],[1,0,0,1],[1,1,1,1],[1,0,0,1],[1,0,0,1],[0,0,0,0]],
+    'L': [[1,0,0,0],[1,0,0,0],[1,0,0,0],[1,0,0,0],[1,1,1,0],[0,0,0,0]],
+    'S': [[0,1,1,1],[1,0,0,0],[0,1,1,0],[0,0,0,1],[1,1,1,0],[0,0,0,0]],
+    'T': [[1,1,1,0],[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,0,0,0]],
+    'R': [[1,1,1,0],[1,0,0,1],[1,1,1,0],[1,0,1,0],[1,0,0,1],[0,0,0,0]],
+    'K': [[1,0,0,1],[1,0,1,0],[1,1,0,0],[1,0,1,0],[1,0,0,1],[0,0,0,0]],
+    'O': [[0,1,1,0],[1,0,0,1],[1,0,0,1],[1,0,0,1],[0,1,1,0],[0,0,0,0]],
+    'U': [[1,0,0,1],[1,0,0,1],[1,0,0,1],[1,0,0,1],[0,1,1,0],[0,0,0,0]],
+    '0': [[0,1,1,0],[1,0,0,1],[1,0,0,1],[1,0,0,1],[0,1,1,0],[0,0,0,0]],
+    '1': [[0,0,1,0],[0,1,1,0],[0,0,1,0],[0,0,1,0],[0,1,1,1],[0,0,0,0]],
+    '2': [[0,1,1,0],[1,0,0,1],[0,0,1,0],[0,1,0,0],[1,1,1,1],[0,0,0,0]],
+    '3': [[1,1,1,0],[0,0,0,1],[0,1,1,0],[0,0,0,1],[1,1,1,0],[0,0,0,0]],
+    '4': [[0,0,1,0],[0,1,1,0],[1,0,1,0],[1,1,1,1],[0,0,1,0],[0,0,0,0]],
+    '5': [[1,1,1,1],[1,0,0,0],[1,1,1,0],[0,0,0,1],[1,1,1,0],[0,0,0,0]],
+    '6': [[0,1,1,0],[1,0,0,0],[1,1,1,0],[1,0,0,1],[0,1,1,0],[0,0,0,0]],
+    '7': [[1,1,1,1],[0,0,0,1],[0,0,1,0],[0,1,0,0],[0,1,0,0],[0,0,0,0]],
+    '8': [[0,1,1,0],[1,0,0,1],[0,1,1,0],[1,0,0,1],[0,1,1,0],[0,0,0,0]],
+    '9': [[0,1,1,0],[1,0,0,1],[0,1,1,1],[0,0,0,1],[0,1,1,0],[0,0,0,0]],
+};
+
+// Draw functions
+function drawChar(x, y, ch, font, w, h, r, g, b) {
+  const bmp = font[ch];
+  if (!bmp) return w + 1;
+  for (let row = 0; row < h; row++)
+    for (let col = 0; col < w; col++)
+      if (bmp[row][col]) setPixel(x + col, y + row, r, g, b);
+  return w + 1;
+}
+
+function drawText5x8(x, y, text, r, g, b) {
+  let cx = x;
+  for (let ch of String(text).toUpperCase()) {
+    cx += drawChar(cx, y, ch, FONT_5X8, 5, 8, r, g, b);
+  }
+}
+
+function drawText4x6(x, y, text, r, g, b) {
+  let cx = x;
+  for (let ch of String(text).toUpperCase()) {
+    cx += drawChar(cx, y, ch, FONT_4X6, 4, 6, r, g, b);
+  }
+}
+
+function drawCountDots(x, y, count, max, lr, lg, lb) {
+  for (let i = 0; i < max; i++) {
+    const lit = i < count;
+    const px = x + i * 5;
+    const color = lit ? [lr, lg, lb] : [30, 20, 10];
+    setPixel(px, y, ...color);
+    setPixel(px+1, y, ...color);
+    setPixel(px, y+1, ...color);
+    setPixel(px+1, y+1, ...color);
+  }
+}
+
+function drawBaseDiamond(x, y, on1, on2, on3) {
+  const occupied = [255,120,0];
+  const empty = [40,30,10];
+  const line = [20,15,5];
+
+  const drawBase = (bx, by, lit) => {
+    const c = lit ? occupied : empty;
+    for (let dx=0; dx<2; dx++)
+      for (let dy=0; dy<2; dy++)
+        setPixel(bx+dx, by+dy, ...c);
+  };
+
+  drawBase(x+5, y, on2);
+  drawBase(x+9, y+4, on1);
+  drawBase(x+1, y+4, on3);
+  drawBase(x+5, y+8, false);
+
+  for (let i = 1; i < 5; i++) {
+    setPixel(x+5-i, y+i, ...line);
+    setPixel(x+6+i, y+i, ...line);
+    setPixel(x+5-i, y+9-i, ...line);
+    setPixel(x+6+i, y+9-i, ...line);
+  }
+}
+
+function drawArrow(x, y, isTop) {
+  const color = [255,220,0];
+  if (isTop) {
+    setPixel(x+2, y+1, ...color);
+    for (let i=1; i<=3; i++) setPixel(x+i, y+2, ...color);
+    for (let i=0; i<5; i++) setPixel(x+i, y+3, ...color);
+  } else {
+    for (let i=0; i<5; i++) setPixel(x+i, y+1, ...color);
+    for (let i=1; i<=3; i++) setPixel(x+i, y+2, ...color);
+    setPixel(x+2, y+3, ...color);
+  }
+}
+
+function render() {
+  clearMatrix();
+
+  const away = document.getElementById('away_team').value.toUpperCase().substring(0,3);
+  const home = document.getElementById('home_team').value.toUpperCase().substring(0,3);
+  const awayS = parseInt(document.getElementById('away_score').value) || 0;
+  const homeS = parseInt(document.getElementById('home_score').value) || 0;
+  const inning = parseInt(document.getElementById('inning').value) || 1;
+  const half = document.getElementById('inning_half').value;
+  let balls = parseInt(document.getElementById('balls').value) || 0;
+  let strikes = parseInt(document.getElementById('strikes').value) || 0;
+  const outs = parseInt(document.getElementById('outs').value) || 0;
+
+  if (outs >= 3) {
+    balls = strikes = 0;
+    bases = { '1b': false, '2b': false, '3b': false };
+  }
+
+  const isTop = half === 'TOP';
+
+  const awayColor = awayS > homeS ? [100,220,100] : [180,180,180];
+  const homeColor = homeS > awayS ? [100,220,100] : [180,180,180];
+
+  // LEFT ZONE
+  const awayW = away.length * 6 - 1;
+  drawText5x8(10 - Math.floor(awayW/2), 0, away, 220, 220, 220);
+  drawText5x8(10 - Math.floor(String(awayS).length * 6 / 2), 9, awayS, ...awayColor);
+
+  drawChar(1, 22, 'B', FONT_4X6, 4, 6, 160,160,160);
+  drawChar(6, 22, 'A', FONT_4X6, 4, 6, 160,160,160);
+  drawChar(11,22, 'L', FONT_4X6, 4, 6, 160,160,160);
+  drawChar(15,22, 'L', FONT_4X6, 4, 6, 160,160,160);
+  drawCountDots(4, 29, balls, 3, 255,150,0);
+
+  // MID ZONE
+  drawBaseDiamond(26, 0, bases['1b'], bases['2b'], bases['3b']);
+
+  const innNum = String(inning);
+  const numW = innNum.length * 5 - 1;
+  const totalW = 5 + 2 + numW;
+  const innX = 20 + Math.floor((24 - totalW) / 2);
+  drawArrow(innX, 11, isTop);
+  drawText4x6(innX + 7, 11, innNum, 255, 220, 0);
+
+  drawText4x6(23, 22, 'STRK', 160, 160, 160);
+  drawCountDots(29, 29, strikes, 2, 255, 80, 80);
+
+  // RIGHT ZONE
+  const homeW = home.length * 6 - 1;
+  drawText5x8(54 - Math.floor(homeW/2), 0, home, 220, 220, 220);
+  drawText5x8(54 - Math.floor(String(homeS).length * 6 / 2), 9, homeS, ...homeColor);
+
+  // OUT with narrow T
+  drawText4x6(49, 22, 'OU', 160, 160, 160);
+  const t_x = 58;
+  setPixel(t_x,   22, 160,160,160);
+  setPixel(t_x+1, 22, 160,160,160);
+  setPixel(t_x+2, 22, 160,160,160);
+  for (let i = 0; i < 4; i++) setPixel(t_x+1, 23 + i, 160,160,160);
+
+  drawCountDots(50, 29, outs, 3, 255, 80, 80);
+}
+
+function toggleBase(base) {
+  bases[base] = !bases[base];
+  document.getElementById('btn_' + base).classList.toggle('active', bases[base]);
+  render();
+}
+
+// Auto refresh on input change
+document.querySelectorAll('input, select').forEach(el => el.addEventListener('input', render));
+render();
+</script>
+</body>
+</html>
