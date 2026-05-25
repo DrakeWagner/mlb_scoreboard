@@ -54,11 +54,14 @@ def draw_text_5x8(canvas, x, y, text, r, g, b):
         cx += draw_char(canvas, cx, y, ch, FONT_5X8, 5, 8, r, g, b)
 
 
-def draw_text_4x6(canvas, x, y, text, r, g, b):
+def draw_text_4x6(canvas, x, y, text, r, g, b, word_spacing=2):
     cx = x
     for ch in str(text).upper():
-        cx += draw_char(canvas, cx, y, ch, FONT_4X6, 4, 6, r, g, b)
-
+        if ch == ' ':
+            cx += word_spacing
+        else:
+            cx += draw_char(canvas, cx, y, ch, FONT_4X6, 4, 6, r, g, b)
+    return cx
 
 def draw_count_dots(canvas, x, y, count, max_dots, lit_r, lit_g, lit_b):
     for i in range(max_dots):
@@ -104,6 +107,30 @@ def draw_arrow(canvas, x, y, is_top):
         for i in range(5):  set_pixel(canvas, x + i, y + 1, *color)
         for i in (1, 2, 3): set_pixel(canvas, x + i, y + 2, *color)
         set_pixel(canvas, x + 2, y + 3, *color)
+
+def render_no_live_game(canvas, next_game=None):
+    canvas.Clear()
+    
+    draw_text_4x6(canvas, 4, 2, "No live games.", 1, 80, 80)
+    
+    if next_game:
+        away = TEAM_ABBREV.get(next_game.get('away_team', ''), '???')
+        home = TEAM_ABBREV.get(next_game.get('home_team', ''), '???')
+        start_time = next_game.get('start_time', 'TBD')
+        
+        draw_text_5x8(canvas, 4, 12, "NEXT:", 100, 180, 255)
+        draw_text_5x8(canvas, 8, 20, f"{away} @ {home}", 220, 220, 220)
+        
+        if start_time != 'TBD':
+            try:
+                dt = datetime.fromisoformat(start_time.replace('Z', '+00:00'))
+                time_str = dt.strftime("%I:%M %p")
+                draw_text_5x8(canvas, 12, 28, time_str, 100, 255, 100)
+            except:
+                draw_text_5x8(canvas, 18, 28, start_time[:5], 100, 255, 100)
+    else:
+        pass
+        # draw_text_4x6(canvas, 12, 20, "NO GAMES today", 180, 80, 80)
 
 
 def render(canvas, game_data):
@@ -214,6 +241,9 @@ def main():
                 game_data = latest[next(iter(latest))]
                 render(canvas, game_data)
                 canvas = matrix.SwapOnVSync(canvas)
+            else:
+                render_no_live_game(canvas)
+            canvas = matrix.SwapOnVSync(canvas)
 
     except KeyboardInterrupt:
         print("\nShutting down.")
