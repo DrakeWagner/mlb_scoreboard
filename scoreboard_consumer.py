@@ -1,8 +1,8 @@
 import json
 import time
 from confluent_kafka import Consumer
-from fonts import FONT_5X8, FONT_4X6
-from teams import TEAM_ABBREV
+from resources.fonts import FONT_5X8, FONT_4X6
+from resources.teams import TEAM_ABBREV
 from rgbmatrix import RGBMatrix, RGBMatrixOptions, graphics
 
 
