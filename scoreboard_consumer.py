@@ -110,10 +110,15 @@ def draw_arrow(canvas, x, y, is_top):
         for i in (1, 2, 3): set_pixel(canvas, x + i, y + 2, *color)
         set_pixel(canvas, x + 2, y + 3, *color)
 
+def draw_matchup(canvas, y, away_abbrev, home_abbrev):
+    draw_text_5x8(canvas, 1,  y,     away_abbrev, 230, 230, 230)
+    draw_text_4x6(canvas, 19, y + 1, '@',         140, 140, 140)
+    draw_text_5x8(canvas, 25, y,     home_abbrev, 230, 230, 230)
+
 def render_no_live_game(canvas, upcoming_games=None):
     canvas.Clear()
     
-    draw_text_4x6(canvas, 4, 2, "No live games.", 1, 80, 80)
+    draw_text_4x6(canvas, 1, 1, "Upcoming:", 1, 80, 80)
 
     try:
         upcoming_games = sorted(
@@ -126,14 +131,13 @@ def render_no_live_game(canvas, upcoming_games=None):
         print(f"Failed to sort upcoming games: {e}")
     
     for i, game in enumerate(upcoming_games[0:3]):
-        y_base = 13 + (i * 7) # space between games
+        y_base = 8 + (i * 8) # height and space between games
 
         away = TEAM_ABBREV.get(game.get('away_team', ''), '???')
         home = TEAM_ABBREV.get(game.get('home_team', ''), '???')
         
         # Matchup 
-        matchup = f"{away} @ {home}"
-        draw_text_5x8(canvas, 3, y_base, matchup, 230, 230, 230, word_spacing=1)
+        draw_matchup(canvas, y_base, away, home)
 
         # Game time in EST
         try:
@@ -144,10 +148,10 @@ def render_no_live_game(canvas, upcoming_games=None):
                 dt_est = dt_utc.astimezone(est_tz)
                 
                 time_str = dt_est.strftime("%I:%M %p").lstrip("0")  # e.g. "7:05 PM"
-                draw_text_4x6(canvas, 42, y_base + 1, time_str, 100, 255, 140, word_spacing=1)
+                draw_text_4x6(canvas, 44, y_base + 1, time_str, 100, 255, 140, word_spacing=1)
             else:
                 draw_text_4x6(canvas, 44, y_base + 1, "TBD", 100, 180, 100)
-        except:
+        except Exception as e:
             print(f'failed to parse game time: {e}')
             draw_text_4x6(canvas, 44, y_base + 1, "TBD", 100, 180, 100)
 
@@ -255,7 +259,10 @@ def main():
             msg = consumer.poll(1.0)
             if msg is not None and not msg.error():
                 value = json.loads(msg.value().decode('utf-8'))
-                latest[value.get('game_pk')] = value
+                if value.get('message_type') == 'upcoming_games':
+                    upcoming_games = value.get('games', [])
+                elif value.get('message_type') == 'game_state':
+                    latest[value.get('game_pk')] = value
 
             # render
             if latest:
