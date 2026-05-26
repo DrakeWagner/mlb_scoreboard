@@ -1,8 +1,50 @@
-11:55:38 | INFO     | mlb producer started
-11:55:38 | INFO     | Config loaded
-11:55:38 | INFO     | Producer connected to config
-11:55:38 | INFO     | Topics: mlb_game_state, mlb_pitches, mlb_boxscore_snapshots
+21:53:42 | INFO     | mlb producer started
+21:53:42 | INFO     | Config loaded
+21:53:42 | INFO     | Producer connected to config
+21:53:42 | INFO     | Topics: mlb_game_state, mlb_pitches, mlb_boxscore_snapshots, mlb_upcoming_games
 
-11:55:38 | INFO     | 11:55:38 - No live games.
-11:55:48 | INFO     | 11:55:48 - No live games.
-11:55:58 | INFO     | 11:55:58 - No live games.
+21:53:42 | INFO     | Processed 0 upcoming games
+21:53:42 | INFO     | 
+21:53:42 - 3 live games
+21:53:43 | INFO     |   822812 | Miami Marlins 8 @ 2 Toronto Blue Jays | 3 new pitches
+21:53:43 | INFO     |   823948 | Colorado Rockies 0 @ 1 Los Angeles Dodgers | 0 new pitches
+21:53:43 | INFO     |   825005 | Seattle Mariners 0 @ 0 Athletics | 2 new pitches
+21:53:53 | INFO     | Processed 0 upcoming games
+21:53:53 | INFO     | 
+21:53:53 - 3 live games
+21:53:54 | INFO     |   822812 | Miami Marlins 8 @ 2 Toronto Blue Jays | 1 new pitches
+21:53:54 | INFO     |   823948 | Colorado Rockies 0 @ 1 Los Angeles Dodgers | 0 new pitches
+21:53:54 | INFO     |   825005 | Seattle Mariners 0 @ 0 Athletics | 1 new pitches
+21:54:04 | INFO     | Processed 0 upcoming games
+21:54:04 | INFO     | 
+21:54:04 - 3 live games
+21:54:05 | INFO     |   822812 | Miami Marlins 8 @ 2 Toronto Blue Jays | 0 new pitches
+21:54:05 | INFO     |   823948 | Colorado Rockies 0 @ 1 Los Angeles Dodgers | 0 new pitches
+21:54:05 | INFO     |   825005 | Seattle Mariners 0 @ 0 Athletics | 1 new pitches
+21:54:15 | INFO     | Processed 0 upcoming games
+21:54:15 | INFO     | 
+21:54:15 - 3 live games
+21:54:15 | INFO     |   822812 | Miami Marlins 8 @ 2 Toronto Blue Jays | 1 new pitches
+21:54:16 | INFO     |   823948 | Colorado Rockies 0 @ 1 Los Angeles Dodgers | 1 new pitches
+21:54:16 | INFO     |   825005 | Seattle Mariners 0 @ 0 Athletics | 0 new pitches
+21:54:26 | INFO     | Processed 0 upcoming games
+21:54:26 | INFO     | 
+21:54:26 - 3 live games
+21:54:26 | INFO     |   822812 | Miami Marlins 8 @ 2 Toronto Blue Jays | 0 new pitches
+21:54:26 | INFO     |   823948 | Colorado Rockies 0 @ 1 Los Angeles Dodgers | 0 new pitches
+21:54:26 | INFO     |   825005 | Seattle Mariners 0 @ 0 Athletics | 1 new pitches
+21:54:37 | INFO     | Processed 0 upcoming games
+21:54:37 | INFO     | 
+21:54:37 - 3 live games
+21:54:37 | INFO     |   822812 | Miami Marlins 8 @ 2 Toronto Blue Jays | 0 new pitches
+21:54:37 | INFO     |   823948 | Colorado Rockies 0 @ 1 Los Angeles Dodgers | 1 new pitches
+21:54:37 | INFO     |   825005 | Seattle Mariners 0 @ 0 Athletics | 0 new pitches
+21:54:47 | INFO     | Processed 0 upcoming games
+21:54:48 | INFO     | 
+21:54:48 - 3 live games
+21:54:48 | INFO     |   822812 | Miami Marlins 8 @ 2 Toronto Blue Jays | 1 new pitches
+21:54:48 | INFO     |   823948 | Colorado Rockies 0 @ 1 Los Angeles Dodgers | 1 new pitches
+21:54:48 | INFO     |   825005 | Seattle Mariners 0 @ 0 Athletics | 1 new pitches
+21:54:58 | INFO     | Processed 0 upcoming games
+21:54:58 | INFO     | 
+21:54:58 - 3 live games

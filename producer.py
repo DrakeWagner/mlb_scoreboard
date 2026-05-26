@@ -35,6 +35,33 @@ def delivery_report(err, msg):
     elif dev_mode:
        logger.debug(f'Delivered {msg.topic()}')
 
+def fetch_upcoming_games():
+    upcoming = []
+    print('fetching upcoming games')
+    today = datetime.now().strftime('%Y-%m-%d')
+    url = f'https://statsapi.mlb.com/api/v1/schedule?sportId=1&date={today}'
+
+    response = requests.get(url, timeout=10)
+    data = response.json()
+
+    for date_obj in data.get('dates', []):
+
+        for game in date_obj.get('games', []):
+            status = game.get('status', {}).get('abstractGameState')
+            
+            if status in ['Preview', 'Scheduled']:
+                game_data = {
+                    'message_type': 'upcoming_game',
+                    'game_pk': str(game['gamePk']),
+                    'away_team': game.get('teams', {}).get('away', {}).get('team', {}).get('name'),
+                    'home_team': game.get('teams', {}).get('home', {}).get('team', {}).get('name'),
+                    'start_time': game.get('gameDate'),
+                    'venue': game.get('venue', {}).get('name', ''),
+                }
+
+                upcoming.append(game_data)
+    return upcoming
+
 
 def fetch_live_game_pks():
     today = datetime.now().strftime('%Y-%m-%d')
@@ -224,12 +251,30 @@ def main():
         'game_state': 'mlb_game_state',
         'pitches': 'mlb_pitches',
         'boxscore': 'mlb_boxscore_snapshots',
+        'upcoming': 'mlb_upcoming_games'
     }
 
     logger.info(f'Topics: {', '.join(topics.values())}\n')
 
     while True:
         try:
+            try:
+                upcoming_games = fetch_upcoming_games()
+
+                producer.produce(
+                    topic='mlb_upcoming_games',
+                    key=b'upcoming_games',
+                    value=json.dumps({
+                        'message_type': 'upcoming_games',
+                        'games': upcoming_games
+                    }).encode('utf-8'),
+                    callback=delivery_report,
+                )
+                                
+                logger.info(f"Processed {len(upcoming_games)} upcoming games")
+            except Exception as e:
+                logger.warning(f"Failed to process upcoming games: {e}")
+
             live_game_pks = fetch_live_game_pks()
             timestamp = datetime.now().strftime('%H:%M:%S')
             count = len(live_game_pks)
@@ -237,8 +282,8 @@ def main():
             if not live_game_pks:
                 logger.info(f'{timestamp} - No live games.')
             else:
-
                 logger.info(f'\n{timestamp} - {count} live game{s}')
+
 
 
                 for game_pk in live_game_pks:

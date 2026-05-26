@@ -1,5 +1,7 @@
 import json
 import time
+from datetime import datetime
+from zoneinfo import ZoneInfo
 from confluent_kafka import Consumer
 from resources.fonts import FONT_5X8, FONT_4X6
 from resources.teams import TEAM_ABBREV
@@ -108,29 +110,46 @@ def draw_arrow(canvas, x, y, is_top):
         for i in (1, 2, 3): set_pixel(canvas, x + i, y + 2, *color)
         set_pixel(canvas, x + 2, y + 3, *color)
 
-def render_no_live_game(canvas, next_game=None):
+def render_no_live_game(canvas, upcoming_games=None):
     canvas.Clear()
     
     draw_text_4x6(canvas, 4, 2, "No live games.", 1, 80, 80)
+
+    try:
+        upcoming_games = sorted(
+            upcoming_games,
+            key=lambda g: datetime.fromisoformat(
+                g['start_time'].replace('Z', '+00:00')
+            )
+        )
+    except Exception as e:
+        print(f"Failed to sort upcoming games: {e}")
     
-    if next_game:
-        away = TEAM_ABBREV.get(next_game.get('away_team', ''), '???')
-        home = TEAM_ABBREV.get(next_game.get('home_team', ''), '???')
-        start_time = next_game.get('start_time', 'TBD')
+    for i, game in enumerate(upcoming_games[0:3]):
+        y_base = 13 + (i * 7) # space between games
+
+        away = TEAM_ABBREV.get(game.get('away_team', ''), '???')
+        home = TEAM_ABBREV.get(game.get('home_team', ''), '???')
         
-        draw_text_5x8(canvas, 4, 12, "NEXT:", 100, 180, 255)
-        draw_text_5x8(canvas, 8, 20, f"{away} @ {home}", 220, 220, 220)
-        
-        if start_time != 'TBD':
-            try:
-                dt = datetime.fromisoformat(start_time.replace('Z', '+00:00'))
-                time_str = dt.strftime("%I:%M %p")
-                draw_text_5x8(canvas, 12, 28, time_str, 100, 255, 100)
-            except:
-                draw_text_5x8(canvas, 18, 28, start_time[:5], 100, 255, 100)
-    else:
-        pass
-        # draw_text_4x6(canvas, 12, 20, "NO GAMES today", 180, 80, 80)
+        # Matchup 
+        matchup = f"{away} @ {home}"
+        draw_text_5x8(canvas, 3, y_base, matchup, 230, 230, 230, word_spacing=1)
+
+        # Game time in EST
+        try:
+            start_str = game.get('start_time')
+            if start_str:
+                dt_utc = datetime.fromisoformat(start_str.replace('Z', '+00:00'))
+                est_tz = ZoneInfo("America/New_York")
+                dt_est = dt_utc.astimezone(est_tz)
+                
+                time_str = dt_est.strftime("%I:%M %p").lstrip("0")  # e.g. "7:05 PM"
+                draw_text_4x6(canvas, 42, y_base + 1, time_str, 100, 255, 140, word_spacing=1)
+            else:
+                draw_text_4x6(canvas, 44, y_base + 1, "TBD", 100, 180, 100)
+        except:
+            print(f'failed to parse game time: {e}')
+            draw_text_4x6(canvas, 44, y_base + 1, "TBD", 100, 180, 100)
 
 
 def render(canvas, game_data):
@@ -221,7 +240,7 @@ def main():
     config['auto.offset.reset'] = 'latest'
 
     consumer = Consumer(config)
-    consumer.subscribe(['mlb_game_state'])
+    consumer.subscribe(['mlb_game_state', 'mlb_upcoming_games'])
 
     matrix = setup_matrix()
     canvas = matrix.CreateFrameCanvas()
@@ -229,6 +248,7 @@ def main():
     print("Scoreboard consumer started...")
 
     latest = {}
+    upcoming_games = []
 
     try:
         while True:
@@ -237,12 +257,16 @@ def main():
                 value = json.loads(msg.value().decode('utf-8'))
                 latest[value.get('game_pk')] = value
 
+            # render
             if latest:
-                game_data = latest[next(iter(latest))]
+                game_data = max(latest.values(), key=lambda g: g.get('ingest_timestamp', ''))
                 render(canvas, game_data)
-                canvas = matrix.SwapOnVSync(canvas)
+                # game_data = latest[next(iter(latest))]
+                # render(canvas, game_data)
+                # canvas = matrix.SwapOnVSync(canvas)
             else:
-                render_no_live_game(canvas)
+                render_no_live_game(canvas, upcoming_games)
+
             canvas = matrix.SwapOnVSync(canvas)
 
     except KeyboardInterrupt:
