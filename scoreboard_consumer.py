@@ -197,6 +197,8 @@ def render(canvas, game_data):
     on_second = bool(game_data.get('runner_on_second'))
     on_third  = bool(game_data.get('runner_on_third'))
 
+    game_over = is_game_over(game_data)
+
     # reset strikes and balls on out
     global previous_outs
     if 'previous_outs' not in globals():
@@ -234,22 +236,44 @@ def render(canvas, game_data):
     draw_base_diamond(canvas, 26, 0, on_first, on_second, on_third)
 
     # Inning
-    inn_num = str(inning)
-    num_w = len(inn_num) * 5 - 1
-    arrow_w = 5
-    total_w = arrow_w + 2 + num_w
-    inn_x = 20 + (24 - total_w) // 2
-    inn_y = 11
-    draw_arrow(canvas, inn_x, inn_y, is_top)
-    draw_text_4x6(canvas, inn_x + arrow_w + 2, inn_y, inn_num, 255, 220, 0)
+    if game_over:
+        final_x = 22
+        cx = final_x
+
+        # custom F
+        set_pixel(canvas, cx+0, 11, 255, 80, 80)
+        set_pixel(canvas, cx+1, 11, 255, 80, 80)
+        set_pixel(canvas, cx+2, 11, 255, 80, 80)
+        set_pixel(canvas, cx+0, 12, 255, 80, 80)
+        set_pixel(canvas, cx+0, 13, 255, 80, 80)
+        set_pixel(canvas, cx+1, 13, 255, 80, 80)
+        set_pixel(canvas, cx+0, 14, 255, 80, 80)
+        set_pixel(canvas, cx+0, 15, 255, 80, 80)
+        cx += 4
+        cx += draw_char(canvas, cx, 11, 'I', FONT_4X6, 4, 6, 255, 80, 80)
+        cx += 0
+        cx += draw_char(canvas, cx - 1, 11, 'N', FONT_4X6, 4, 6, 255, 80, 80)
+        cx += 1
+        cx += draw_char(canvas, cx - 2, 11, 'A', FONT_4X6, 4, 6, 255, 80, 80)
+        cx += 1        
+        cx += draw_char(canvas, cx - 3, 11, 'L', FONT_4X6, 4, 6, 255, 80, 80)
+    else:
+        inn_num = str(inning)
+        num_w = len(inn_num) * 5 - 1
+        arrow_w = 5
+        total_w = arrow_w + 2 + num_w
+        inn_x = 20 + (24 - total_w) // 2
+        inn_y = 11
+        draw_arrow(canvas, inn_x, inn_y, is_top)
+        draw_text_4x6(canvas, inn_x + arrow_w + 2, inn_y, inn_num, 255, 220, 0)
 
     draw_text_4x6(canvas, 23, 22, 'STRK', 160, 160, 160)
     draw_count_dots(canvas, 29, 29, strikes, 2, 255, 80, 80)
 
     # RIGHT ZONE - Centered
     home_width = len(home) * 6 - 1
-    draw_text_5x8(canvas, 54 - home_width//2, 0, home, 220, 220, 220)
-    draw_text_5x8(canvas, 54 - (len(str(home_s))*6)//2, 9, home_s, *home_color)
+    draw_text_5x8(canvas, 53 - home_width//2, 0, home, 220, 220, 220)
+    draw_text_5x8(canvas, 53 - (len(str(home_s))*6)//2, 9, home_s, *home_color)
 
     # OUT with narrower T
     draw_text_4x6(canvas, 48, 22, 'OU', 160, 160, 160)
@@ -263,20 +287,20 @@ def render(canvas, game_data):
     draw_count_dots(canvas, 50, 29, outs, 3, 255, 80, 80)
 
     return {
-    "game_pk": game_data.get("game_pk"),
-    "away": away,
-    "home": home,
-    "away_score": away_s,
-    "home_score": home_s,
-    "inning": inning,
-    "inning_half": raw_half,
-    "balls": balls,
-    "strikes": strikes,
-    "outs": outs,
-    "on_first": on_first,
-    "on_second": on_second,
-    "on_third": on_third,
-}
+        "game_pk": game_data.get("game_pk"),
+        "away": away,
+        "home": home,
+        "away_score": away_s,
+        "home_score": home_s,
+        "inning": inning,
+        "inning_half": raw_half,
+        "balls": balls,
+        "strikes": strikes,
+        "outs": outs,
+        "on_first": on_first,
+        "on_second": on_second,
+        "on_third": on_third,
+    }
 
 ######### terminal interaction
 def inning_suffix(n):
