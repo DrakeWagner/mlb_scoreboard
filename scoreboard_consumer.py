@@ -254,6 +254,54 @@ def render(canvas, game_data):
     "on_third": on_third,
 }
 
+######### terminal interaction
+def inning_suffix(n):
+    n = int(n)
+    if 10 <= n % 100 <= 20:
+        suffix = "th"
+    else:
+        suffix = {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
+    return f"{n}{suffix}"
+
+def format_game_menu_line(index, game):
+    away = TEAM_ABBREV.get(game.get("away_team", ""), "AWY")
+    home = TEAM_ABBREV.get(game.get("home_team", ""), "HME")
+
+    away_s = game.get("away_score", 0)
+    home_s = game.get("home_score", 0)
+
+    inning = game.get("current_inning") or 1
+    inning_half = (game.get("inning_half") or "").upper()
+
+    return f"{index}) {away} {away_s} @ {home} {home_s} {inning_half} {inning_suffix(inning)}"
+
+def choose_game_from_terminal(latest):
+    games = list(latest.values())
+
+    if not games:
+        print("No active games.")
+        return None
+
+    for i, game in enumerate(games, start=1):
+        print(format_game_menu_line(i, game))
+
+    while True:
+        choice = input("\nEnter game number to watch: ").strip()
+
+        try:
+            choice_num = int(choice)
+            if 1 <= choice_num <= len(games):
+                selected_game = games[choice_num - 1]
+                selected_game_pk = selected_game.get("game_pk")
+
+                print(f"\nWatching: {format_game_menu_line(choice_num, selected_game)}\n")
+                return selected_game_pk
+        except ValueError:
+            pass
+
+        print("Invalid.")
+###########
+
 def main():
     config = read_config()
     config['log_level'] = '0'
@@ -272,6 +320,22 @@ def main():
     upcoming_games = []
     last_score_logs = None
 
+    print("Active games:")
+    start_time = time.time()
+    while time.time() - start_time < 5:
+        msg = consumer.poll(1.0)
+
+        if msg is not None and not msg.error():
+            value = json.loads(msg.value().decode("utf-8"))
+
+            if value.get("message_type") == "upcoming_games":
+                upcoming_games = value.get("games", [])
+
+            elif value.get("message_type") == "game_state":
+                latest[value.get("game_pk")] = value
+
+    selected_game_pk = choose_game_from_terminal(latest)
+
     try:
         while True:
             msg = consumer.poll(1.0)
@@ -284,7 +348,7 @@ def main():
 
             # render
             if latest:
-                game_data = latest[next(iter(latest))]
+                game_data = latest[selected_game_pk] if selected_game_pk in latest else latest[next(iter(latest))]
                 display_state = render(canvas, game_data)
                 score_logs = (
                     f"{display_state['away']} {display_state['away_score']} @ {display_state['home']} {display_state['home_score']}\n"
