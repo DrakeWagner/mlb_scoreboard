@@ -47,16 +47,20 @@ def fetch_upcoming_games():
     for date_obj in data.get('dates', []):
 
         for game in date_obj.get('games', []):
-            status = game.get('status', {}).get('abstractGameState')
-            
-            if status in ['Preview', 'Scheduled']:
-                game_data = {
+            abstract_state = game.get('status', {}).get('abstractGameState')
+            detailed_state = game.get('status', {}).get('detailedState')
+
+            if detailed_state != "In Progress" and abstract_state != "Final":
+                            game_data = {
                     'message_type': 'upcoming_game',
                     'game_pk': str(game['gamePk']),
                     'away_team': game.get('teams', {}).get('away', {}).get('team', {}).get('name'),
                     'home_team': game.get('teams', {}).get('home', {}).get('team', {}).get('name'),
                     'start_time': game.get('gameDate'),
                     'venue': game.get('venue', {}).get('name', ''),
+                    'status': detailed_state,
+                    'abstract_state': abstract_state
+
                 }
 
                 upcoming.append(game_data)

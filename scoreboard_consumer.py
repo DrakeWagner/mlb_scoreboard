@@ -117,6 +117,30 @@ def draw_matchup(canvas, y, away_abbrev, home_abbrev):
     draw_text_4x6(canvas, 19, y + 1, '@',         140, 140, 140)
     draw_text_5x8(canvas, 25, y,     home_abbrev, 230, 230, 230)
 
+def is_game_started(game):
+    return (
+        game.get("abstract_state") == "Live"
+        and game.get("status") == "In Progress"
+    )
+
+def is_game_over(game_data):
+    inning = int(game_data.get('current_inning', 0))
+    half = (game_data.get('inning_half') or '').strip().upper()
+    outs = int(game_data.get('outs', 0))
+    away_score = int(game_data.get('away_score', 0))
+    home_score = int(game_data.get('home_score', 0))
+    
+    if inning < 9:
+        return False
+    
+    if half == 'TOP' and outs >= 3 and home_score > away_score:
+        return True
+    
+    if half == 'BOT' and home_score > away_score:
+        return True
+    
+    return False
+
 def render_no_live_game(canvas, upcoming_games=None):
     canvas.Clear()
     
@@ -269,27 +293,40 @@ def format_game_menu_line(index, game):
 
     away_s = game.get("away_score", 0)
     home_s = game.get("home_score", 0)
-
-    inning = game.get("current_inning") or 1
-    inning_half = (game.get("inning_half") or "").upper()
-
-    return f"{index}) {away} {away_s} @ {home} {home_s} {inning_half} {inning_suffix(inning)}"
+    status = game.get('status')
+    if status == 'Warmup':
+        return f"{index}) {away} {away_s} @ {home} {home_s} WARMUP"
+    else:
+        inning = game.get("current_inning") or 1
+        inning_half = (game.get("inning_half") or "").upper()
+        return f"{index}) {away} {away_s} @ {home} {home_s} {inning_half} {inning_suffix(inning)}"
 
 def choose_game_from_terminal(latest):
-    games = list(latest.values())
+    games = sorted(
+        latest.values(),
+        key=lambda g: (
+            g.get("current_inning") or 0,
+            0 if g.get("status") == "Warmup"
+            else 1 if (g.get("inning_half") or "").lower() == "top"
+            else 2
+        )
+    )
 
     if not games:
         print("No active games.")
         return None
-
-    for i, game in enumerate(games, start=1):
-        print(format_game_menu_line(i, game))
+    else:
+        print('0) Upcoming games')
+        for i, game in enumerate(games, start=1):
+            print(format_game_menu_line(i, game))
 
     while True:
         choice = input("\nEnter game number to watch: ").strip()
 
         try:
             choice_num = int(choice)
+            if choice_num == 0:
+                return "UPCOMING"
             if 1 <= choice_num <= len(games):
                 selected_game = games[choice_num - 1]
                 selected_game_pk = selected_game.get("game_pk")
@@ -320,7 +357,6 @@ def main():
     upcoming_games = []
     last_score_logs = None
 
-    print("Active games:")
     start_time = time.time()
     while time.time() - start_time < 5:
         msg = consumer.poll(1.0)
@@ -347,7 +383,9 @@ def main():
                     latest[value.get('game_pk')] = value
 
             # render
-            if latest:
+            if selected_game_pk == "UPCOMING":
+                render_no_live_game(canvas, upcoming_games)
+            elif latest:
                 game_data = latest[selected_game_pk] if selected_game_pk in latest else latest[next(iter(latest))]
                 display_state = render(canvas, game_data)
                 score_logs = (
