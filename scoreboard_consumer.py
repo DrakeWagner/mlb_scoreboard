@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from confluent_kafka import Consumer
-from resources.fonts import FONT_5X8, FONT_4X6
+from resources.fonts import FONT_5X8, FONT_4X6, FONT_4X6_NARROW
 from resources.teams import TEAM_ABBREV
 from rgbmatrix import RGBMatrix, RGBMatrixOptions, graphics
 
@@ -30,7 +30,7 @@ def setup_matrix():
     options.parallel = 1
     options.hardware_mapping = 'adafruit-hat'
     options.gpio_slowdown = 4
-    options.brightness = 60
+    options.brightness = 30
     return RGBMatrix(options=options)
 
 
@@ -61,6 +61,8 @@ def draw_text_4x6(canvas, x, y, text, r, g, b, word_spacing=2):
     for ch in str(text).upper():
         if ch == ' ':
             cx += word_spacing
+        elif ch in [':', '.', '!']:
+            cx += draw_char(canvas, cx, y, ch, FONT_4X6_NARROW, 1, 6, r, g, b)
         else:
             cx += draw_char(canvas, cx, y, ch, FONT_4X6, 4, 6, r, g, b)
     return cx
@@ -147,8 +149,8 @@ def render_no_live_game(canvas, upcoming_games=None):
                 est_tz = ZoneInfo("America/New_York")
                 dt_est = dt_utc.astimezone(est_tz)
                 
-                time_str = dt_est.strftime("%I:%M %p").lstrip("0")  # e.g. "7:05 PM"
-                draw_text_4x6(canvas, 44, y_base + 1, time_str, 100, 255, 140, word_spacing=1)
+                time_str = dt_est.strftime("%I:%M").lstrip("0") 
+                draw_text_4x6(canvas, 47, y_base + 1, time_str, 100, 255, 140, word_spacing=0)
             else:
                 draw_text_4x6(canvas, 44, y_base + 1, "TBD", 100, 180, 100)
         except Exception as e:
@@ -236,6 +238,21 @@ def render(canvas, game_data):
 
     draw_count_dots(canvas, 50, 29, outs, 3, 255, 80, 80)
 
+    return {
+    "game_pk": game_data.get("game_pk"),
+    "away": away,
+    "home": home,
+    "away_score": away_s,
+    "home_score": home_s,
+    "inning": inning,
+    "inning_half": raw_half,
+    "balls": balls,
+    "strikes": strikes,
+    "outs": outs,
+    "on_first": on_first,
+    "on_second": on_second,
+    "on_third": on_third,
+}
 
 def main():
     config = read_config()
@@ -253,6 +270,7 @@ def main():
 
     latest = {}
     upcoming_games = []
+    last_score_logs = None
 
     try:
         while True:
@@ -266,11 +284,26 @@ def main():
 
             # render
             if latest:
-                game_data = max(latest.values(), key=lambda g: g.get('ingest_timestamp', ''))
-                render(canvas, game_data)
-                # game_data = latest[next(iter(latest))]
-                # render(canvas, game_data)
-                # canvas = matrix.SwapOnVSync(canvas)
+                game_data = latest[next(iter(latest))]
+                display_state = render(canvas, game_data)
+                score_logs = (
+                    f"{display_state['away']} {display_state['away_score']} @ {display_state['home']} {display_state['home_score']}\n"
+                    f"{display_state['inning_half']} {display_state['inning']}\n"
+                    f"{display_state['balls']}-{display_state['strikes']}-{display_state['outs']}\n"
+                    f"{'Runners on ' + runners if (runners := ', '.join(
+                        base for base, on_base in [
+                            ('1st', display_state['on_first']),
+                            ('2nd', display_state['on_second']),
+                            ('3rd', display_state['on_third']),
+                        ]
+                        if on_base
+                    )) else ''}"
+                )
+
+                if score_logs != last_score_logs:
+                    print(score_logs)
+                    last_score_logs = score_logs
+
             else:
                 render_no_live_game(canvas, upcoming_games)
 
