@@ -13,7 +13,7 @@ PRODUCER_PID=$!
 echo "Producer started (PID: $PRODUCER_PID)"
 
 # allow producer to start
-sleep 5
+sleep 3
 
 # start consumer
 echo "Starting Consumer..."

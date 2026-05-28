@@ -1,5 +1,7 @@
 import json
 import time
+import sys
+import select
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from confluent_kafka import Consumer
@@ -141,12 +143,60 @@ def is_game_over(game_data):
     
     return False
 
+def get_play_description(value):
+
+    if not isinstance(value, dict):
+        return None
+
+    play = value.get('currentPlay', {}) or {}
+    if not play and 'liveData' in value:
+        play = value.get('liveData', {}).get('plays', {}).get('currentPlay', {})
+    
+    desc = (play.get('des') or '').upper()
+    event = (play.get('event') or '').upper().strip()
+    
+    # Quick mapping for clean display
+    event_map = {
+        'STRIKEOUT': "STRIKE OUT",
+        'FIELD_OUT': 'FIELD OUT',
+        'WALK': "WALK",
+        'SINGLE': "SINGLE",
+        'DOUBLE': "DOUBLE",
+        'TRIPLE': "TRIPLE",
+        'HOME_RUN': "HOME RUN!",
+        'DOUBLE_PLAY': 'DOUBLE PLAY',
+        'TRIPLE_PLAY': 'TRIPLE PLAY',
+        'HIT_BY_PITCH': 'HIT BY PITCH',
+        'ERROR': 'ERROR',
+        'STOLEN_BASE_2B': "STOLE 2ND BASE",
+        'STOLEN_BASE_3B': "STOLE 3RD BASE",
+        'STOLEN_BASE_HOME': "STOLE HOME PLATE!",
+        'CAUGHT_STEALING_2B': "CAUGHT STEALING 2ND",
+        'CAUGHT_STEALING_3B': "CAUGHT STEALING 3RD",
+        'CAUGHT_STEALING_HOME': "CAUGHT STEALING HOME",
+        'BALK': 'BALK',
+        'WILD_PITCH': "WILD PITCH",
+        'PASSED_BALL': "PASSED BALL",
+    }
+    
+    if event in event_map:
+        return event_map[event]
+    
+    if len(event) > 0:
+        return event.replace('_', ' ').upper()
+
+    if event != '':
+        print('event: ', event)
+    
+    return None
+
 def render_no_live_game(canvas, upcoming_games=None):
     canvas.Clear()
     
     draw_text_4x6(canvas, 1, 1, "Upcoming:", 1, 80, 80)
 
     try:
+        print(upcoming_games)
         upcoming_games = sorted(
             upcoming_games,
             key=lambda g: datetime.fromisoformat(
@@ -182,7 +232,7 @@ def render_no_live_game(canvas, upcoming_games=None):
             draw_text_4x6(canvas, 44, y_base + 1, "TBD", 100, 180, 100)
 
 
-def render(canvas, game_data):
+def render(canvas, game_data, show_event=False, event_text=None):
     canvas.Clear()
 
     away = TEAM_ABBREV.get(game_data.get('away_team', ''), 'AWY')
@@ -286,6 +336,12 @@ def render(canvas, game_data):
 
     draw_count_dots(canvas, 50, 29, outs, 3, 255, 80, 80)
 
+    if show_event and event_text:
+        for x in range(64):
+            set_pixel(canvas, x, 27, 0, 0, 0)
+            set_pixel(canvas, x, 28, 0, 0, 0)
+        draw_text_4x6(canvas, 4, 27, event_text, 255, 220, 60)
+
     return {
         "game_pk": game_data.get("game_pk"),
         "away": away,
@@ -381,10 +437,13 @@ def main():
     upcoming_games = []
     last_score_logs = None
 
+    last_event_text = None
+    last_event_timeout = 0
+
     start_time = time.time()
     while time.time() - start_time < 5:
         msg = consumer.poll(1.0)
-
+        print(msg)
         if msg is not None and not msg.error():
             value = json.loads(msg.value().decode("utf-8"))
 
@@ -393,6 +452,11 @@ def main():
 
             elif value.get("message_type") == "game_state":
                 latest[value.get("game_pk")] = value
+
+                event_text = get_play_description(value)
+                if event_text and event_text != last_event_text:
+                    last_event_text = event_text
+                    last_event_timeout = time.time() + 3.5
 
     selected_game_pk = choose_game_from_terminal(latest)
 
@@ -406,12 +470,19 @@ def main():
                 elif value.get('message_type') == 'game_state':
                     latest[value.get('game_pk')] = value
 
+                    event_text = get_play_description(value)
+                    
+                    if event_text and event_text != last_event_text:
+                        last_event_text = event_text
+                        last_event_timeout = time.time() + 3.5
+                        print(f"[{time.strftime('%H:%M:%S')}] EVENT: {event_text}")
+
             # render
             if selected_game_pk == "UPCOMING":
                 render_no_live_game(canvas, upcoming_games)
             elif latest:
-                game_data = latest[selected_game_pk] if selected_game_pk in latest else latest[next(iter(latest))]
-                display_state = render(canvas, game_data)
+                game_data = latest.get(selected_game_pk) or next(iter(latest.values()), {})
+                display_state = render(canvas, game_data, show_event=(time.time() < last_event_timeout), event_text=last_event_text)
                 score_logs = (
                     f"{display_state['away']} {display_state['away_score']} @ {display_state['home']} {display_state['home_score']}\n"
                     f"{display_state['inning_half']} {display_state['inning']}\n"

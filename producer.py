@@ -51,7 +51,7 @@ def fetch_upcoming_games():
             detailed_state = game.get('status', {}).get('detailedState')
 
             if detailed_state != "In Progress" and abstract_state != "Final":
-                            game_data = {
+                game_data = {
                     'message_type': 'upcoming_game',
                     'game_pk': str(game['gamePk']),
                     'away_team': game.get('teams', {}).get('away', {}).get('team', {}).get('name'),
@@ -65,7 +65,6 @@ def fetch_upcoming_games():
 
                 upcoming.append(game_data)
     return upcoming
-
 
 def fetch_live_game_pks():
     today = datetime.now().strftime('%Y-%m-%d')
@@ -93,6 +92,7 @@ def extract_game_state(game_pk, data):
     current_play = live_data.get('plays', {}).get('currentPlay', {})
     matchup = current_play.get('matchup', {})
     count = current_play.get('count', {})
+    result = current_play.get('result', {})
 
     return {
         'message_type': 'game_state',
@@ -127,6 +127,10 @@ def extract_game_state(game_pk, data):
         'weather_condition': game_data.get('weather', {}).get('condition'),
         'weather_temp': game_data.get('weather', {}).get('temp'),
         'weather_wind': game_data.get('weather', {}).get('wind'),
+        'currentPlay': {
+            'event': result.get('eventType') or result.get('event'),
+            'des': result.get('description'),
+        },
     }
 
 
