@@ -1,201 +1,33 @@
-18:06:08 | INFO     | mlb producer started
-18:06:08 | INFO     | Config loaded
-18:06:08 | INFO     | Producer connected to config
-18:06:08 | INFO     | Topics: mlb_game_state, mlb_pitches, mlb_boxscore_snapshots, mlb_upcoming_games
+16:11:54 | INFO     | mlb producer started
+16:11:54 | INFO     | Config loaded
+16:11:54 | INFO     | Producer connected to config
+16:11:54 | INFO     | Topics: mlb_game_state, mlb_pitches, mlb_boxscore_snapshots, mlb_upcoming_games
 
-18:06:08 | INFO     | Processed 3 upcoming games
-18:06:08 | INFO     | 
-18:06:08 - 1 live game
-18:06:08 | INFO     |   824757 | Atlanta Braves 2 @ 2 Boston Red Sox | 8 new pitches
-18:06:19 | INFO     | Processed 3 upcoming games
-18:06:19 | INFO     | 
-18:06:19 - 1 live game
-18:06:19 | INFO     |   824757 | Atlanta Braves 2 @ 2 Boston Red Sox | 0 new pitches
-18:06:29 | INFO     | Processed 3 upcoming games
-18:06:29 | INFO     | 
-18:06:29 - 1 live game
-18:06:30 | INFO     |   824757 | Atlanta Braves 2 @ 2 Boston Red Sox | 1 new pitches
-18:06:40 | INFO     | Processed 3 upcoming games
-18:06:40 | INFO     | 
-18:06:40 - 1 live game
-18:06:40 | INFO     |   824757 | Atlanta Braves 2 @ 2 Boston Red Sox | 0 new pitches
-18:06:50 | INFO     | Processed 3 upcoming games
-18:06:50 | INFO     | 
-18:06:50 - 1 live game
-18:06:51 | INFO     |   824757 | Atlanta Braves 2 @ 2 Boston Red Sox | 1 new pitches
-18:07:01 | INFO     | Processed 3 upcoming games
-18:07:01 | INFO     | 
-18:07:01 - 1 live game
-18:07:01 | INFO     |   824757 | Atlanta Braves 2 @ 2 Boston Red Sox | 1 new pitches
-18:07:11 | INFO     | Processed 3 upcoming games
-18:07:11 | INFO     | 
-18:07:11 - 1 live game
-18:07:11 | INFO     |   824757 | Atlanta Braves 3 @ 2 Boston Red Sox | 0 new pitches
-18:07:22 | INFO     | Processed 3 upcoming games
-18:07:22 | INFO     | 
-18:07:22 - 1 live game
-18:07:22 | INFO     |   824757 | Atlanta Braves 3 @ 2 Boston Red Sox | 0 new pitches
-18:07:32 | INFO     | Processed 3 upcoming games
-18:07:32 | INFO     | 
-18:07:32 - 1 live game
-18:07:32 | INFO     |   824757 | Atlanta Braves 3 @ 2 Boston Red Sox | 0 new pitches
-18:07:42 | INFO     | Processed 3 upcoming games
-18:07:43 | INFO     | 
-18:07:43 - 1 live game
-18:07:43 | INFO     |   824757 | Atlanta Braves 3 @ 2 Boston Red Sox | 0 new pitches
-18:07:53 | INFO     | Processed 3 upcoming games
-18:07:53 | INFO     | 
-18:07:53 - 1 live game
-18:07:53 | INFO     |   824757 | Atlanta Braves 3 @ 2 Boston Red Sox | 1 new pitches
-18:08:03 | INFO     | Processed 3 upcoming games
-18:08:03 | INFO     | 
-18:08:03 - 1 live game
-18:08:04 | INFO     |   824757 | Atlanta Braves 3 @ 2 Boston Red Sox | 1 new pitches
-18:08:14 | INFO     | Processed 3 upcoming games
-18:08:14 | INFO     | 
-18:08:14 - 1 live game
-18:08:14 | INFO     |   824757 | Atlanta Braves 3 @ 2 Boston Red Sox | 1 new pitches
-18:08:24 | INFO     | Processed 3 upcoming games
-18:08:24 | INFO     | 
-18:08:24 - 1 live game
-18:08:24 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 0 new pitches
-18:08:35 | INFO     | Processed 3 upcoming games
-18:08:35 | INFO     | 
-18:08:35 - 1 live game
-18:08:35 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 0 new pitches
-18:08:45 | INFO     | Processed 3 upcoming games
-18:08:45 | INFO     | 
-18:08:45 - 1 live game
-18:08:45 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 0 new pitches
-18:08:55 | INFO     | Processed 3 upcoming games
-18:08:55 | INFO     | 
-18:08:55 - 1 live game
-18:08:56 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 0 new pitches
-18:09:06 | INFO     | Processed 3 upcoming games
-18:09:06 | INFO     | 
-18:09:06 - 1 live game
-18:09:06 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 0 new pitches
-18:09:16 | INFO     | Processed 3 upcoming games
-18:09:16 | INFO     | 
-18:09:16 - 1 live game
-18:09:17 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 1 new pitches
-18:09:27 | INFO     | Processed 3 upcoming games
-18:09:27 | INFO     | 
-18:09:27 - 1 live game
-18:09:27 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 0 new pitches
-18:09:37 | INFO     | Processed 3 upcoming games
-18:09:37 | INFO     | 
-18:09:37 - 1 live game
-18:09:37 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 2 new pitches
-18:09:48 | INFO     | Processed 3 upcoming games
-18:09:48 | INFO     | 
-18:09:48 - 1 live game
-18:09:48 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 0 new pitches
-18:09:58 | INFO     | Processed 3 upcoming games
-18:09:58 | INFO     | 
-18:09:58 - 1 live game
-18:09:58 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 1 new pitches
-18:10:08 | INFO     | Processed 3 upcoming games
-18:10:08 | INFO     | 
-18:10:08 - 1 live game
-18:10:09 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 0 new pitches
-18:10:19 | INFO     | Processed 3 upcoming games
-18:10:19 | INFO     | 
-18:10:19 - 1 live game
-18:06:31 | INFO     |   824757 | Atlanta Braves 2 @ 2 Boston Red Sox | 1 new pitches
-18:06:41 | INFO     | Processed 3 upcoming games
-18:06:41 | INFO     | 
-18:06:41 - 1 live game
-18:06:41 | INFO     |   824757 | Atlanta Braves 2 @ 2 Boston Red Sox | 1 new pitches
-18:06:51 | INFO     | Processed 3 upcoming games
-18:06:51 | INFO     | 
-18:06:51 - 1 live game
-18:06:52 | INFO     |   824757 | Atlanta Braves 2 @ 2 Boston Red Sox | 0 new pitches
-18:07:02 | INFO     | Processed 3 upcoming games
-18:07:02 | INFO     | 
-18:07:02 - 1 live game
-18:07:02 | INFO     |   824757 | Atlanta Braves 2 @ 2 Boston Red Sox | 1 new pitches
-18:07:12 | INFO     | Processed 3 upcoming games
-18:07:12 | INFO     | 
-18:07:12 - 1 live game
-18:07:12 | INFO     |   824757 | Atlanta Braves 3 @ 2 Boston Red Sox | 0 new pitches
-18:07:23 | INFO     | Processed 3 upcoming games
-18:07:23 | INFO     | 
-18:07:23 - 1 live game
-18:07:23 | INFO     |   824757 | Atlanta Braves 3 @ 2 Boston Red Sox | 0 new pitches
-18:07:33 | INFO     | Processed 3 upcoming games
-18:07:33 | INFO     | 
-18:07:33 - 1 live game
-18:07:33 | INFO     |   824757 | Atlanta Braves 3 @ 2 Boston Red Sox | 0 new pitches
-18:07:43 | INFO     | Processed 3 upcoming games
-18:07:44 | INFO     | 
-18:07:44 - 1 live game
-18:07:44 | INFO     |   824757 | Atlanta Braves 3 @ 2 Boston Red Sox | 0 new pitches
-18:07:54 | INFO     | Processed 3 upcoming games
-18:07:54 | INFO     | 
-18:07:54 - 1 live game
-18:07:54 | INFO     |   824757 | Atlanta Braves 3 @ 2 Boston Red Sox | 1 new pitches
-18:08:04 | INFO     | Processed 3 upcoming games
-18:08:04 | INFO     | 
-18:08:04 - 1 live game
-18:08:05 | INFO     |   824757 | Atlanta Braves 3 @ 2 Boston Red Sox | 1 new pitches
-18:08:15 | INFO     | Processed 3 upcoming games
-18:08:15 | INFO     | 
-18:08:15 - 1 live game
-18:08:15 | INFO     |   824757 | Atlanta Braves 3 @ 2 Boston Red Sox | 1 new pitches
-18:08:25 | INFO     | Processed 3 upcoming games
-18:08:25 | INFO     | 
-18:08:25 - 1 live game
-18:08:25 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 0 new pitches
-18:08:36 | INFO     | Processed 3 upcoming games
-18:08:36 | INFO     | 
-18:08:36 - 1 live game
-18:08:36 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 0 new pitches
-18:08:46 | INFO     | Processed 3 upcoming games
-18:08:46 | INFO     | 
-18:08:46 - 1 live game
-18:08:46 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 0 new pitches
-18:08:56 | INFO     | Processed 3 upcoming games
-18:08:57 | INFO     | 
-18:08:57 - 1 live game
-18:08:57 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 0 new pitches
-18:09:07 | INFO     | Processed 3 upcoming games
-18:09:07 | INFO     | 
-18:09:07 - 1 live game
-18:09:07 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 0 new pitches
-18:09:17 | INFO     | Processed 3 upcoming games
-18:09:17 | INFO     | 
-18:09:17 - 1 live game
-18:09:18 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 1 new pitches
-18:09:28 | INFO     | Processed 3 upcoming games
-18:09:28 | INFO     | 
-18:09:28 - 1 live game
-18:09:28 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 0 new pitches
-18:09:38 | INFO     | Processed 3 upcoming games
-18:09:38 | INFO     | 
-18:09:38 - 1 live game
-18:09:39 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 2 new pitches
-18:09:49 | INFO     | Processed 3 upcoming games
-18:09:49 | INFO     | 
-18:09:49 - 1 live game
-18:09:49 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 0 new pitches
-18:09:59 | INFO     | Processed 3 upcoming games
-18:09:59 | INFO     | 
-18:09:59 - 1 live game
-18:09:59 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 1 new pitches
-18:10:10 | INFO     | Processed 3 upcoming games
-18:10:10 | INFO     | 
-18:10:10 - 1 live game
-18:10:10 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 0 new pitches
-18:09:50 | INFO     | Processed 3 upcoming games
-18:09:50 | INFO     | 
-18:09:50 - 1 live game
-18:09:50 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 0 new pitches
-18:10:00 | INFO     | Processed 3 upcoming games
-18:10:00 | INFO     | 
-18:10:00 - 1 live game
-18:10:00 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 1 new pitches
-18:10:11 | INFO     | Processed 3 upcoming games
-18:10:11 | INFO     | 
-18:10:11 - 1 live game
-18:10:11 | INFO     |   824757 | Atlanta Braves 7 @ 2 Boston Red Sox | 0 new pitches
+16:11:54 | INFO     | Processed 15 upcoming games
+16:11:54 | INFO     | 16:11:54 - No live games.
+16:12:04 | INFO     | Processed 15 upcoming games
+16:12:04 | INFO     | 16:12:04 - No live games.
+16:12:15 | INFO     | Processed 15 upcoming games
+16:12:15 | INFO     | 16:12:15 - No live games.
+16:12:25 | INFO     | Processed 15 upcoming games
+16:12:25 | INFO     | 16:12:25 - No live games.
+16:12:35 | INFO     | Processed 15 upcoming games
+16:12:35 | INFO     | 16:12:35 - No live games.
+16:12:45 | INFO     | Processed 15 upcoming games
+16:12:45 | INFO     | 16:12:45 - No live games.
+16:12:55 | INFO     | Processed 15 upcoming games
+16:12:55 | INFO     | 16:12:55 - No live games.
+16:13:06 | INFO     | Processed 15 upcoming games
+16:13:06 | INFO     | 16:13:06 - No live games.
+16:13:16 | INFO     | Processed 15 upcoming games
+16:13:16 | INFO     | 16:13:16 - No live games.
+16:13:26 | INFO     | Processed 15 upcoming games
+16:13:26 | INFO     | 16:13:26 - No live games.
+16:13:36 | INFO     | Processed 15 upcoming games
+16:13:36 | INFO     | 16:13:36 - No live games.
+16:13:46 | INFO     | Processed 15 upcoming games
+16:13:47 | INFO     | 16:13:47 - No live games.
+16:13:57 | INFO     | Processed 15 upcoming games
+16:13:57 | INFO     | 16:13:57 - No live games.
+16:14:07 | INFO     | Processed 15 upcoming games
+16:14:07 | INFO     | 16:14:07 - No live games.

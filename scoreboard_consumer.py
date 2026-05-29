@@ -178,6 +178,9 @@ def get_play_description(value):
         'WILD_PITCH': "WILD PITCH",
         'PASSED_BALL': "PASSED BALL",
     }
+
+    if event in {"GAME_ADVISORY", "GAME ADVISORY", "BATTER_TIMEOUT", "BATTER TIMEOUT"}:
+        return None
     
     if event in event_map:
         return event_map[event]
@@ -196,7 +199,6 @@ def render_no_live_game(canvas, upcoming_games=None):
     draw_text_4x6(canvas, 1, 1, "Upcoming:", 1, 80, 80)
 
     try:
-        print(upcoming_games)
         upcoming_games = sorted(
             upcoming_games,
             key=lambda g: datetime.fromisoformat(
@@ -443,7 +445,6 @@ def main():
     start_time = time.time()
     while time.time() - start_time < 5:
         msg = consumer.poll(1.0)
-        print(msg)
         if msg is not None and not msg.error():
             value = json.loads(msg.value().decode("utf-8"))
 
@@ -461,7 +462,19 @@ def main():
     selected_game_pk = choose_game_from_terminal(latest)
 
     try:
-        while True:
+        while True:   
+
+            # press q to return to game selection
+            if select.select([sys.stdin], [], [], 0)[0]:
+                command = sys.stdin.readline().strip().lower()
+                if command == "q":
+                    print("\nReturning to game selection...\n")
+                    selected_game_pk = choose_game_from_terminal(latest)
+                    last_score_logs = None
+                    last_event_text = None
+                    last_event_timeout = 0
+                    continue
+
             msg = consumer.poll(1.0)
             if msg is not None and not msg.error():
                 value = json.loads(msg.value().decode('utf-8'))
@@ -471,7 +484,6 @@ def main():
                     latest[value.get('game_pk')] = value
 
                     event_text = get_play_description(value)
-                    
                     if event_text and event_text != last_event_text:
                         last_event_text = event_text
                         last_event_timeout = time.time() + 3.5
