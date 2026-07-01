@@ -79,7 +79,7 @@ def draw_count_dots(canvas, x, y, count, max_dots, lit_r, lit_g, lit_b):
                 set_pixel(canvas, px + dx, y + dy, rr, gg, bb)
 
 
-def draw_base_diamond(canvas, x, y, on_first, on_second, on_third):
+def draw_base_diamond(canvas, x, y, on_first, on_second, on_third, advance_animation = None):
     occupied = (255, 120, 0)
     empty = (40, 30, 10)
     line = (20, 15, 5)
@@ -102,6 +102,27 @@ def draw_base_diamond(canvas, x, y, on_first, on_second, on_third):
         set_pixel(canvas, x + 5 - i, y + 9 - i, *line)
         set_pixel(canvas, x + 6 + i, y + 9 - i, *line)
 
+    # runner advance animation
+    if advance_animation:
+        flash_interval = advance_animation.get("flash_interval", 0.15)
+        repeat_count = advance_animation.get("repeat_count", 3)
+
+        if advance_animation.get("from") == "first" and advance_animation.get("to") == "second":
+            path = [
+                (x + 9, y + 4),  # 1st
+                (x + 9, y + 3),
+                (x + 8, y + 2),
+                (x + 7, y + 1),
+                (x + 5, y),      # 2nd
+            ]
+
+            elapsed = time.time() - advance_animation["start"]
+            step = int(elapsed / flash_interval)
+            total_steps = len(path) * repeat_count
+
+            if step < total_steps:
+                px, py = path[step % len(path)]
+                set_pixel(canvas, px, py, *occupied)
 
 def draw_arrow(canvas, x, y, is_top):
     color = (255, 220, 0)
@@ -116,8 +137,7 @@ def draw_arrow(canvas, x, y, is_top):
 
 def draw_matchup(canvas, y, away_abbrev, home_abbrev):
     draw_text_5x8(canvas, 1,  y,     away_abbrev, 230, 230, 230)
-    draw_text_4x6(canvas, 19, y + 1, '@',         140, 140, 140)
-    draw_text_5x8(canvas, 25, y,     home_abbrev, 230, 230, 230)
+    draw_text_5x8(canvas, 23, y,     home_abbrev, 230, 230, 230)
 
 def is_game_started(game):
     return (
@@ -143,56 +163,103 @@ def is_game_over(game_data):
     
     return False
 
-def get_play_description(value):
+class EventDisplay:
+    def __init__(self, render_timeout=3.5, render_frequency=0.25):
+        self.render_timeout = render_timeout
+        self.render_frequency = render_frequency
 
-    if not isinstance(value, dict):
-        return None
+        self.text = None
+        self.timeout = 0
+        self.last_key = None
+        self.last_render_time = 0
 
-    play = value.get('currentPlay', {}) or {}
-    if not play and 'liveData' in value:
-        play = value.get('liveData', {}).get('plays', {}).get('currentPlay', {})
-    
-    desc = (play.get('des') or '').upper()
-    event = (play.get('event') or '').upper().strip()
-    
-    # Quick mapping for clean display
-    event_map = {
-        'STRIKEOUT': "STRIKE OUT",
-        'FIELD_OUT': 'FIELD OUT',
-        'WALK': "WALK",
-        'SINGLE': "SINGLE",
-        'DOUBLE': "DOUBLE",
-        'TRIPLE': "TRIPLE",
-        'HOME_RUN': "HOME RUN!",
-        'DOUBLE_PLAY': 'DOUBLE PLAY',
-        'TRIPLE_PLAY': 'TRIPLE PLAY',
-        'HIT_BY_PITCH': 'HIT BY PITCH',
-        'ERROR': 'ERROR',
-        'STOLEN_BASE_2B': "STOLE 2ND BASE",
-        'STOLEN_BASE_3B': "STOLE 3RD BASE",
-        'STOLEN_BASE_HOME': "STOLE HOME PLATE!",
-        'CAUGHT_STEALING_2B': "CAUGHT STEALING 2ND",
-        'CAUGHT_STEALING_3B': "CAUGHT STEALING 3RD",
-        'CAUGHT_STEALING_HOME': "CAUGHT STEALING HOME",
-        'BALK': 'BALK',
-        'WILD_PITCH': "WILD PITCH",
-        'PASSED_BALL': "PASSED BALL",
-    }
+    def reset(self):
+        self.text = None
+        self.timeout = 0
+        self.last_key = None
+        self.last_render_time = 0
 
-    if event in {"GAME_ADVISORY", "GAME ADVISORY", "BATTER_TIMEOUT", "BATTER TIMEOUT"}:
-        return None
-    
-    if event in event_map:
-        return event_map[event]
-    
-    if len(event) > 0:
-        return event.replace('_', ' ').upper()
+    def should_show(self):
+        return time.time() < self.timeout
 
-    if event != '':
-        print('event: ', event)
-    
-    return None
+    def update(self, value):
+        event_text = self._get_play_description(value)
 
+        if not event_text:
+            return None
+
+        now = time.time()
+        event_key = self._get_event_key(value, event_text)
+
+        if event_key == self.last_key:
+            return None
+
+        if now - self.last_render_time < self.render_frequency:
+            return None
+
+        self.last_key = event_key
+        self.text = event_text
+        self.timeout = now + self.render_timeout
+        self.last_render_time = now
+
+        return event_text
+
+    def _get_event_key(self, value, event_text):
+        play = value.get('currentPlay', {}) or {}
+
+        if not play and 'liveData' in value:
+            play = value.get('liveData', {}).get('plays', {}).get('currentPlay', {})
+
+        about = play.get('about', {}) or {}
+
+        return (
+            value.get("game_pk"),
+            about.get("inning"),
+            about.get("halfInning"),
+            about.get("atBatIndex"),
+            event_text,
+        )
+
+    def _get_play_description(self, value):
+        if not isinstance(value, dict):
+            return None
+
+        play = value.get('currentPlay', {}) or {}
+        if not play and 'liveData' in value:
+            play = value.get('liveData', {}).get('plays', {}).get('currentPlay', {})
+
+        if not play:
+            return None
+
+        event = (play.get('event') or '').upper().strip()
+
+        event_map = {
+            'STRIKEOUT': "STRIKE OUT",
+            'FIELD_OUT': 'FIELD OUT',
+            'WALK': "WALK",
+            'SINGLE': "SINGLE",
+            'DOUBLE': "DOUBLE",
+            'TRIPLE': "TRIPLE",
+            'HOME_RUN': "HOME RUN!",
+            'DOUBLE_PLAY': 'DOUBLE PLAY',
+            'TRIPLE_PLAY': 'TRIPLE PLAY',
+            'HIT_BY_PITCH': 'HIT BY PITCH',
+            'ERROR': 'ERROR',
+            'STOLEN_BASE_2B': "STOLE 2ND BASE",
+            'STOLEN_BASE_3B': "STOLE 3RD BASE",
+            'STOLEN_BASE_HOME': "STOLE HOME PLATE!",
+            'CAUGHT_STEALING_2B': "CAUGHT STEALING 2ND",
+            'CAUGHT_STEALING_3B': "CAUGHT STEALING 3RD",
+            'CAUGHT_STEALING_HOME': "CAUGHT STEALING HOME",
+            'BALK': 'BALK',
+            'WILD_PITCH': "WILD PITCH",
+            'PASSED_BALL': "PASSED BALL",
+        }
+
+        if event in event_map:
+            return event_map[event]
+
+        
 def render_no_live_game(canvas, upcoming_games=None):
     canvas.Clear()
     
@@ -226,7 +293,7 @@ def render_no_live_game(canvas, upcoming_games=None):
                 dt_est = dt_utc.astimezone(est_tz)
                 
                 time_str = dt_est.strftime("%I:%M").lstrip("0") 
-                draw_text_4x6(canvas, 47, y_base + 1, time_str, 100, 255, 140, word_spacing=0)
+                draw_text_4x6(canvas, 43, y_base + 1, time_str, 100, 255, 140, word_spacing=0)
             else:
                 draw_text_4x6(canvas, 44, y_base + 1, "TBD", 100, 180, 100)
         except Exception as e:
@@ -257,6 +324,10 @@ def render(canvas, game_data, show_event=False, event_text=None):
         previous_outs = outs
 
     if outs >= 3 or outs > previous_outs:
+        balls = 0
+        strikes = 0
+
+    elif balls > 3 or strikes > 2:
         balls = 0
         strikes = 0
 
@@ -439,8 +510,13 @@ def main():
     upcoming_games = []
     last_score_logs = None
 
-    last_event_text = None
-    last_event_timeout = 0
+    event_display = EventDisplay(
+        render_timeout=3.5,
+        render_frequency=0.8,
+    )
+
+    last_bases = None
+    advance_animation = None
 
     start_time = time.time()
     while time.time() - start_time < 5:
@@ -453,11 +529,7 @@ def main():
 
             elif value.get("message_type") == "game_state":
                 latest[value.get("game_pk")] = value
-
-                event_text = get_play_description(value)
-                if event_text and event_text != last_event_text:
-                    last_event_text = event_text
-                    last_event_timeout = time.time() + 3.5
+                event_display.update(value)
 
     selected_game_pk = choose_game_from_terminal(latest)
 
@@ -471,8 +543,7 @@ def main():
                     print("\nReturning to game selection...\n")
                     selected_game_pk = choose_game_from_terminal(latest)
                     last_score_logs = None
-                    last_event_text = None
-                    last_event_timeout = 0
+                    event_display.reset()
                     continue
 
             msg = consumer.poll(1.0)
@@ -482,11 +553,8 @@ def main():
                     upcoming_games = value.get('games', [])
                 elif value.get('message_type') == 'game_state':
                     latest[value.get('game_pk')] = value
-
-                    event_text = get_play_description(value)
-                    if event_text and event_text != last_event_text:
-                        last_event_text = event_text
-                        last_event_timeout = time.time() + 3.5
+                    event_text = event_display.update(value)
+                    if event_text:
                         print(f"[{time.strftime('%H:%M:%S')}] EVENT: {event_text}")
 
             # render
@@ -494,7 +562,12 @@ def main():
                 render_no_live_game(canvas, upcoming_games)
             elif latest:
                 game_data = latest.get(selected_game_pk) or next(iter(latest.values()), {})
-                display_state = render(canvas, game_data, show_event=(time.time() < last_event_timeout), event_text=last_event_text)
+                display_state = render(
+                    canvas,
+                    game_data,
+                    show_event=event_display.should_show(),
+                    event_text=event_display.text
+                )
                 score_logs = (
                     f"{display_state['away']} {display_state['away_score']} @ {display_state['home']} {display_state['home_score']}\n"
                     f"{display_state['inning_half']} {display_state['inning']}\n"
