@@ -32,7 +32,7 @@ def setup_matrix():
     options.parallel = 1
     options.hardware_mapping = 'adafruit-hat'
     options.gpio_slowdown = 4
-    options.brightness = 30
+    options.brightness = 25
     return RGBMatrix(options=options)
 
 
@@ -79,7 +79,44 @@ def draw_count_dots(canvas, x, y, count, max_dots, lit_r, lit_g, lit_b):
                 set_pixel(canvas, px + dx, y + dy, rr, gg, bb)
 
 
-def draw_base_diamond(canvas, x, y, on_first, on_second, on_third, advance_animation = None):
+def detect_runner_advance_animation(previous_bases, current_bases):
+    if previous_bases is None or current_bases is None:
+        return None
+
+    prev = {
+        "first": bool(previous_bases[0]),
+        "second": bool(previous_bases[1]),
+        "third": bool(previous_bases[2]),
+    }
+    curr = {
+        "first": bool(current_bases[0]),
+        "second": bool(current_bases[1]),
+        "third": bool(current_bases[2]),
+    }
+
+    transitions = [
+        ("first", "second", prev["first"] and not curr["first"] and curr["second"]),
+        ("second", "third", prev["second"] and not curr["second"] and curr["third"]),
+        ("third", "home", prev["third"] and not curr["third"]),
+        ("first", "third", prev["first"] and not curr["first"] and not curr["second"] and curr["third"]),
+        ("home", "first", not prev["first"] and curr["first"]),
+        ("home", "second", not prev["second"] and curr["second"]),
+    ]
+
+    for source, dest, triggered in transitions:
+        if triggered:
+            return {
+                "from": source,
+                "to": dest,
+                "start": time.time(),
+                "flash_interval": 0.12,
+                "repeat_count": 3,
+            }
+
+    return None
+
+
+def draw_base_diamond(canvas, x, y, on_first, on_second, on_third, advance_animation=None):
     occupied = (255, 120, 0)
     empty = (40, 30, 10)
     line = (20, 15, 5)
@@ -107,22 +144,66 @@ def draw_base_diamond(canvas, x, y, on_first, on_second, on_third, advance_anima
         flash_interval = advance_animation.get("flash_interval", 0.15)
         repeat_count = advance_animation.get("repeat_count", 3)
 
-        if advance_animation.get("from") == "first" and advance_animation.get("to") == "second":
-            path = [
-                (x + 9, y + 4),  # 1st
+        path_map = {
+            ("first", "second"): [
+                (x + 9, y + 4),
                 (x + 9, y + 3),
                 (x + 8, y + 2),
                 (x + 7, y + 1),
-                (x + 5, y),      # 2nd
-            ]
+                (x + 5, y),
+            ],
+            ("second", "third"): [
+                (x + 5, y),
+                (x + 4, y + 1),
+                (x + 3, y + 2),
+                (x + 2, y + 3),
+                (x + 1, y + 4),
+            ],
+            ("third", "home"): [
+                (x + 1, y + 4),
+                (x + 2, y + 5),
+                (x + 3, y + 6),
+                (x + 4, y + 7),
+                (x + 5, y + 8),
+            ],
+            ("first", "third"): [
+                (x + 9, y + 4),
+                (x + 8, y + 5),
+                (x + 7, y + 6),
+                (x + 4, y + 7),
+                (x + 1, y + 4),
+            ],
+            ("home", "first"): [
+                (x + 5, y + 8),
+                (x + 6, y + 7),
+                (x + 7, y + 6),
+                (x + 8, y + 5),
+                (x + 9, y + 4),
+            ],
+            ("home", "second"): [
+                (x + 5, y + 8),
+                (x + 5, y + 6),
+                (x + 5, y + 4),
+                (x + 5, y + 2),
+                (x + 5, y),
+            ],
+        }
 
-            elapsed = time.time() - advance_animation["start"]
-            step = int(elapsed / flash_interval)
-            total_steps = len(path) * repeat_count
+        start = advance_animation.get("start")
+        if start is None:
+            return
 
-            if step < total_steps:
-                px, py = path[step % len(path)]
-                set_pixel(canvas, px, py, *occupied)
+        path = path_map.get((advance_animation.get("from"), advance_animation.get("to")))
+        if not path:
+            return
+
+        elapsed = time.time() - start
+        step = int(elapsed / flash_interval)
+        total_steps = len(path) * repeat_count
+
+        if step < total_steps:
+            px, py = path[step % len(path)]
+            set_pixel(canvas, px, py, *occupied)
 
 def draw_arrow(canvas, x, y, is_top):
     color = (255, 220, 0)
@@ -182,7 +263,12 @@ class EventDisplay:
     def should_show(self):
         return time.time() < self.timeout
 
-    def update(self, value):
+    def update(self, value, selected_game_pk=None):
+        if selected_game_pk is not None:
+            current_game_pk = str(value.get("game_pk") or "")
+            if current_game_pk and current_game_pk != str(selected_game_pk):
+                return None
+
         event_text = self._get_play_description(value)
 
         if not event_text:
@@ -319,7 +405,7 @@ def render(canvas, game_data, show_event=False, event_text=None):
     game_over = is_game_over(game_data)
 
     # reset strikes and balls on out
-    global previous_outs
+    global previous_outs, last_bases
     if 'previous_outs' not in globals():
         previous_outs = outs
 
@@ -336,6 +422,9 @@ def render(canvas, game_data, show_event=False, event_text=None):
         on_first = on_second = on_third = False
 
     previous_outs = outs
+    current_bases = (on_first, on_second, on_third)
+    advance_animation = detect_runner_advance_animation(last_bases, current_bases) if 'last_bases' in globals() else None
+    last_bases = current_bases
 
     raw_half = (game_data.get('inning_half') or '').strip().upper()
     is_top = raw_half in ('TOP', 'T')
@@ -356,7 +445,7 @@ def render(canvas, game_data, show_event=False, event_text=None):
     draw_count_dots(canvas, 4, 29, balls, 3, 255, 150, 0)
 
     # MID ZONE
-    draw_base_diamond(canvas, 26, 0, on_first, on_second, on_third)
+    draw_base_diamond(canvas, 26, 0, on_first, on_second, on_third, advance_animation=advance_animation)
 
     # Inning
     if game_over:
@@ -553,7 +642,7 @@ def main():
                     upcoming_games = value.get('games', [])
                 elif value.get('message_type') == 'game_state':
                     latest[value.get('game_pk')] = value
-                    event_text = event_display.update(value)
+                    event_text = event_display.update(value, selected_game_pk)
                     if event_text:
                         print(f"[{time.strftime('%H:%M:%S')}] EVENT: {event_text}")
 
