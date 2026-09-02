@@ -100,7 +100,7 @@ def detect_runner_advance_animations(previous_bases, current_bases, runner_movem
         for movement in runner_movement:
             source = _normalize_base_name(movement.get('start'))
             dest = _normalize_base_name(movement.get('end'))
-            if source and dest and source != dest and not movement.get('is_out'):
+            if source and dest and (source != dest or source == 'home') and not movement.get('is_out'):
                 animations.append({
                     'from': source,
                     'to': dest,
@@ -124,12 +124,16 @@ def detect_runner_advance_animations(previous_bases, current_bases, runner_movem
     }
 
     transitions = [
-        ("first", "second", prev["first"] and not curr["first"] and curr["second"]),
-        ("second", "third", prev["second"] and not curr["second"] and curr["third"]),
-        ("third", "home", prev["third"] and not curr["third"]),
-        ("first", "third", prev["first"] and not curr["first"] and not curr["second"] and curr["third"]),
+        ("home", "home", False),
         ("home", "first", not prev["first"] and curr["first"]),
-        ("home", "second", not prev["second"] and curr["second"]),
+        ("home", "second", not prev["first"] and not prev["second"] and curr["second"]),
+        ("home", "third", not prev["first"] and not prev["second"] and not prev["third"] and curr["third"]),
+        ("first", "second", prev["first"] and not curr["first"] and curr["second"]),
+        ("first", "third", prev["first"] and not curr["first"] and not curr["second"] and curr["third"]),
+        ("first", "home", prev["first"] and not curr["first"] and not curr["second"] and not curr["third"]),
+        ("second", "third", prev["second"] and not curr["second"] and curr["third"]),
+        ("second", "home", prev["second"] and not curr["first"] and not curr["second"] and not curr["third"]),
+        ("third", "home", prev["third"] and not curr["third"]),
     ]
 
     for source, dest, triggered in transitions:
@@ -193,32 +197,23 @@ def draw_base_diamond(canvas, x, y, on_first, on_second, on_third, advance_anima
         flash_interval = 0.15
         repeat_count = 3
 
-        # Match the exact diagonal lines used to draw the diamond edges:
-        #   x + 5 - i, y + i
-        #   x + 6 + i, y + i
-        #   x + 5 - i, y + 9 - i
-        #   x + 6 + i, y + 9 - i
+        home_to_first = [(x + 6 + i, y + 9 - i) for i in range(1, 4)]
+        first_to_second = [(x + 6 + i, y + i) for i in range(3, 0, -1)]
+        second_to_third = [(x + 5 - i, y + i) for i in range(1, 4)]
+        third_to_home = [(x + 5 - i, y + 9 - i) for i in range(3, 0, -1)]
         path_map = {
-            ("first", "second"): [
-                (x + 6 + i, y + i) for i in range(1, 4)
+            ("home", "home"): [
+                (x + 5, y + 8),
             ],
-            ("second", "third"): [
-                (x + 5 - i, y + i) for i in range(1, 4)
-            ],
-            ("third", "home"): [
-                (x + 5 - i, y + 9 - i) for i in range(1, 4)
-            ],
-            ("first", "third"): [
-                (x + 6 + i, y + i) for i in range(1, 4)
-            ] + [
-                (x + 5 - i, y + 9 - i) for i in range(1, 4)
-            ],
-            ("home", "first"): [
-                (x + 6 + i, y + 9 - i) for i in range(1, 4)
-            ],
-            ("home", "second"): [
-                (x + 5, y + 8 - (2 * i)) for i in range(1, 4)
-            ],
+            ("home", "first"): home_to_first,
+            ("home", "second"): home_to_first + first_to_second,
+            ("home", "third"): home_to_first + first_to_second + second_to_third,
+            ("first", "second"): first_to_second,
+            ("first", "third"): first_to_second + second_to_third,
+            ("first", "home"): first_to_second + second_to_third + third_to_home,
+            ("second", "third"): second_to_third,
+            ("second", "home"): second_to_third + third_to_home,
+            ("third", "home"): third_to_home
         }
 
         for animation in animations:
