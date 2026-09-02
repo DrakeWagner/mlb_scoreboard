@@ -79,9 +79,38 @@ def draw_count_dots(canvas, x, y, count, max_dots, lit_r, lit_g, lit_b):
                 set_pixel(canvas, px + dx, y + dy, rr, gg, bb)
 
 
-def detect_runner_advance_animation(previous_bases, current_bases):
+def _normalize_base_name(base):
+    normalized = str(base or '').strip().upper()
+    return {
+        '1B': 'first',
+        '2B': 'second',
+        '3B': 'third',
+        'H': 'home',
+        'HOME': 'home',
+        'BATTER': 'home',
+    }.get(normalized)
+
+
+def detect_runner_advance_animations(previous_bases, current_bases, runner_movement=None):
     if previous_bases is None or current_bases is None:
-        return None
+        return []
+
+    if runner_movement:
+        animations = []
+        for movement in runner_movement:
+            source = _normalize_base_name(movement.get('start'))
+            dest = _normalize_base_name(movement.get('end'))
+            if source and dest and source != dest and not movement.get('is_out'):
+                animations.append({
+                    'from': source,
+                    'to': dest,
+                    'start': time.time(),
+                    'flash_interval': 0.2,
+                    'repeat_count': 5,
+                    'duration': 3.0,
+                })
+        if animations:
+            return animations
 
     prev = {
         "first": bool(previous_bases[0]),
@@ -105,19 +134,39 @@ def detect_runner_advance_animation(previous_bases, current_bases):
 
     for source, dest, triggered in transitions:
         if triggered:
-            return {
+            return [{
                 "from": source,
                 "to": dest,
                 "start": time.time(),
-                "flash_interval": 0.12,
-                "repeat_count": 3,
-            }
+                "flash_interval": 0.2,
+                "repeat_count": 5,
+                "duration": 3.0,
+            }]
 
-    return None
+    return []
+
+
+def detect_runner_advance_animation(previous_bases, current_bases, runner_movement=None):
+    animations = detect_runner_advance_animations(
+        previous_bases,
+        current_bases,
+        runner_movement,
+    )
+    return animations[0] if animations else None
+
+
+def runner_movement_animations(value):
+    movement = value.get('runner_movement') or []
+    return detect_runner_advance_animations(
+        (False, False, False),
+        (False, False, False),
+        movement,
+    )
 
 
 def draw_base_diamond(canvas, x, y, on_first, on_second, on_third, advance_animation=None):
     occupied = (255, 120, 0)
+    runner_flash = (255, 255, 255)
     empty = (40, 30, 10)
     line = (20, 15, 5)
 
@@ -139,71 +188,55 @@ def draw_base_diamond(canvas, x, y, on_first, on_second, on_third, advance_anima
         set_pixel(canvas, x + 5 - i, y + 9 - i, *line)
         set_pixel(canvas, x + 6 + i, y + 9 - i, *line)
 
-    # runner advance animation
     if advance_animation:
-        flash_interval = advance_animation.get("flash_interval", 0.15)
-        repeat_count = advance_animation.get("repeat_count", 3)
+        animations = advance_animation if isinstance(advance_animation, list) else [advance_animation]
+        flash_interval = 0.15
+        repeat_count = 3
 
+        # Match the exact diagonal lines used to draw the diamond edges:
+        #   x + 5 - i, y + i
+        #   x + 6 + i, y + i
+        #   x + 5 - i, y + 9 - i
+        #   x + 6 + i, y + 9 - i
         path_map = {
             ("first", "second"): [
-                (x + 9, y + 4),
-                (x + 9, y + 3),
-                (x + 8, y + 2),
-                (x + 7, y + 1),
-                (x + 5, y),
+                (x + 6 + i, y + i) for i in range(1, 4)
             ],
             ("second", "third"): [
-                (x + 5, y),
-                (x + 4, y + 1),
-                (x + 3, y + 2),
-                (x + 2, y + 3),
-                (x + 1, y + 4),
+                (x + 5 - i, y + i) for i in range(1, 4)
             ],
             ("third", "home"): [
-                (x + 1, y + 4),
-                (x + 2, y + 5),
-                (x + 3, y + 6),
-                (x + 4, y + 7),
-                (x + 5, y + 8),
+                (x + 5 - i, y + 9 - i) for i in range(1, 4)
             ],
             ("first", "third"): [
-                (x + 9, y + 4),
-                (x + 8, y + 5),
-                (x + 7, y + 6),
-                (x + 4, y + 7),
-                (x + 1, y + 4),
+                (x + 6 + i, y + i) for i in range(1, 4)
+            ] + [
+                (x + 5 - i, y + 9 - i) for i in range(1, 4)
             ],
             ("home", "first"): [
-                (x + 5, y + 8),
-                (x + 6, y + 7),
-                (x + 7, y + 6),
-                (x + 8, y + 5),
-                (x + 9, y + 4),
+                (x + 6 + i, y + 9 - i) for i in range(1, 4)
             ],
             ("home", "second"): [
-                (x + 5, y + 8),
-                (x + 5, y + 6),
-                (x + 5, y + 4),
-                (x + 5, y + 2),
-                (x + 5, y),
+                (x + 5, y + 8 - (2 * i)) for i in range(1, 4)
             ],
         }
 
-        start = advance_animation.get("start")
-        if start is None:
-            return
+        for animation in animations:
+            start = animation.get("start")
+            if start is None:
+                continue
 
-        path = path_map.get((advance_animation.get("from"), advance_animation.get("to")))
-        if not path:
-            return
+            path = path_map.get((animation.get("from"), animation.get("to")))
+            if not path:
+                continue
 
-        elapsed = time.time() - start
-        step = int(elapsed / flash_interval)
-        total_steps = len(path) * repeat_count
+            elapsed = time.time() - start
+            step = int(elapsed / animation.get("flash_interval", flash_interval))
+            total_steps = len(path) * animation.get("repeat_count", repeat_count)
 
-        if step < total_steps:
-            px, py = path[step % len(path)]
-            set_pixel(canvas, px, py, *occupied)
+            if step < total_steps:
+                px, py = path[step % len(path)]
+                set_pixel(canvas, px, py, *runner_flash)
 
 def draw_arrow(canvas, x, y, is_top):
     color = (255, 220, 0)
@@ -405,9 +438,11 @@ def render(canvas, game_data, show_event=False, event_text=None):
     game_over = is_game_over(game_data)
 
     # reset strikes and balls on out
-    global previous_outs, last_bases
+    global previous_outs, last_bases, active_advance_animation
     if 'previous_outs' not in globals():
         previous_outs = outs
+    if 'active_advance_animation' not in globals():
+        active_advance_animation = None
 
     if outs >= 3 or outs > previous_outs:
         balls = 0
@@ -423,7 +458,23 @@ def render(canvas, game_data, show_event=False, event_text=None):
 
     previous_outs = outs
     current_bases = (on_first, on_second, on_third)
-    advance_animation = detect_runner_advance_animation(last_bases, current_bases) if 'last_bases' in globals() else None
+
+    newly_detected = (
+        detect_runner_advance_animations(last_bases, current_bases)
+        if 'last_bases' in globals() else []
+    )
+    if newly_detected:
+        active_advance_animation = newly_detected
+    elif active_advance_animation is not None:
+        if any(
+            time.time() - animation.get('start', 0) < animation.get('duration', 0.9)
+            for animation in active_advance_animation
+        ):
+            pass
+        else:
+            active_advance_animation = None
+
+    advance_animation = active_advance_animation
     last_bases = current_bases
 
     raw_half = (game_data.get('inning_half') or '').strip().upper()
@@ -582,13 +633,19 @@ def choose_game_from_terminal(latest):
 ###########
 
 def main():
+    global active_advance_animation
+
     config = read_config()
     config['log_level'] = '0'
     config['group.id'] = 'scoreboard-consumer'
     config['auto.offset.reset'] = 'latest'
 
     consumer = Consumer(config)
-    consumer.subscribe(['mlb_game_state', 'mlb_upcoming_games'])
+    consumer.subscribe([
+        'mlb_game_state',
+        'mlb_upcoming_games',
+        'mlb_runner_movement',
+    ])
 
     matrix = setup_matrix()
     canvas = matrix.CreateFrameCanvas()
@@ -598,6 +655,26 @@ def main():
     latest = {}
     upcoming_games = []
     last_score_logs = None
+    seen_runner_movement = set()
+    pending_runner_animations = {}
+
+    def receive_runner_movement(value):
+        game_pk = str(value.get('game_pk') or '')
+        movement_key = (
+            game_pk,
+            value.get('at_bat_index'),
+            tuple(
+                (movement.get('player_id'), movement.get('start'), movement.get('end'))
+                for movement in value.get('runner_movement', [])
+            ),
+        )
+        if not game_pk or movement_key in seen_runner_movement:
+            return
+
+        seen_runner_movement.add(movement_key)
+        animations = runner_movement_animations(value)
+        if animations:
+            pending_runner_animations[game_pk] = animations
 
     event_display = EventDisplay(
         render_timeout=3.5,
@@ -619,8 +696,11 @@ def main():
             elif value.get("message_type") == "game_state":
                 latest[value.get("game_pk")] = value
                 event_display.update(value)
+            elif value.get("message_type") == "runner_movement":
+                receive_runner_movement(value)
 
     selected_game_pk = choose_game_from_terminal(latest)
+    active_advance_animation = pending_runner_animations.pop(str(selected_game_pk), None)
 
     try:
         while True:   
@@ -645,6 +725,13 @@ def main():
                     event_text = event_display.update(value, selected_game_pk)
                     if event_text:
                         print(f"[{time.strftime('%H:%M:%S')}] EVENT: {event_text}")
+                elif value.get('message_type') == 'runner_movement':
+                    receive_runner_movement(value)
+                    if str(value.get('game_pk')) == str(selected_game_pk):
+                        active_advance_animation = pending_runner_animations.pop(
+                            str(selected_game_pk),
+                            active_advance_animation,
+                        )
 
             # render
             if selected_game_pk == "UPCOMING":

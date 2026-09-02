@@ -85,11 +85,28 @@ def fetch_live_game_pks():
         return []
 
 
+def extract_runner_movement(current_play):
+    movement = []
+    for runner in current_play.get('runners', []):
+        runner_movement = runner.get('movement', {}) or {}
+        start = runner_movement.get('start')
+        end = runner_movement.get('end')
+        if start and end:
+            movement.append({
+                'player_id': runner.get('details', {}).get('runner', {}).get('id'),
+                'start': start,
+                'end': end,
+                'is_out': bool(runner_movement.get('isOut')),
+            })
+    return movement
+
+
 def extract_game_state(game_pk, data):
     game_data = data.get('gameData', {})
     live_data = data.get('liveData', {})
     linescore = live_data.get('linescore', {})
     current_play = live_data.get('plays', {}).get('currentPlay', {})
+    runner_movement = extract_runner_movement(current_play)
     matchup = current_play.get('matchup', {})
     count = current_play.get('count', {})
     result = current_play.get('result', {})
@@ -123,6 +140,7 @@ def extract_game_state(game_pk, data):
         'batter_name': matchup.get('batter', {}).get('fullName'),
         'pitcher_id': matchup.get('pitcher', {}).get('id'),
         'pitcher_name': matchup.get('pitcher', {}).get('fullName'),
+        'at_bat_index': current_play.get('atBatIndex'),
         'venue': game_data.get('venue', {}).get('name'),
         'weather_condition': game_data.get('weather', {}).get('condition'),
         'weather_temp': game_data.get('weather', {}).get('temp'),
@@ -131,6 +149,7 @@ def extract_game_state(game_pk, data):
             'event': result.get('eventType') or result.get('event'),
             'des': result.get('description'),
         },
+        'runner_movement': runner_movement,
     }
 
 
@@ -257,6 +276,7 @@ def main():
 
     topics = {
         'game_state': 'mlb_game_state',
+        'runner_movement': 'mlb_runner_movement',
         'pitches': 'mlb_pitches',
         'boxscore': 'mlb_boxscore_snapshots',
         'upcoming': 'mlb_upcoming_games'
@@ -308,6 +328,20 @@ def main():
                             value=json.dumps(game_state).encode('utf-8'),
                             callback=delivery_report,
                         )
+
+                        if game_state['runner_movement']:
+                            producer.produce(
+                                topic=topics['runner_movement'],
+                                key=key,
+                                value=json.dumps({
+                                    'message_type': 'runner_movement',
+                                    'game_pk': str(game_pk),
+                                    'at_bat_index': game_state.get('at_bat_index'),
+                                    'event': game_state['currentPlay']['event'],
+                                    'runner_movement': game_state['runner_movement'],
+                                }).encode('utf-8'),
+                                callback=delivery_report,
+                            )
 
                         new_pitches = extract_pitches(game_pk, data)
                         for pitch_key, pitch_record in new_pitches:
